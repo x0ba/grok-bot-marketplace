@@ -1,0 +1,20 @@
+{
+  "name": "grok-bot-marketplace",
+  "install": "npm install && CONVEX_AGENT_MODE=anonymous npx convex dev --once",
+  "terminals": [
+    {
+      "name": "convex",
+      "command": "CONVEX_AGENT_MODE=anonymous npx convex dev",
+      "description": "Runs the local Convex backend and watches convex/ for changes. Uses anonymous agent mode so it needs no Convex account, and writes VITE_CONVEX_URL to .env.local."
+    },
+    {
+      "name": "vite",
+      "command": "npm run dev",
+      "description": "Runs the TanStack Start dev server on http://localhost:3000. Reads VITE_CONVEX_URL from .env.local. Clerk runs in keyless mode unless VITE_CLERK_PUBLISHABLE_KEY/CLERK_SECRET_KEY are provided as secrets."
+    }
+  ],
+  "ports": [
+    { "name": "web", "port": 3000 },
+    { "name": "convex", "port": 3210 }
+  ]
+}
