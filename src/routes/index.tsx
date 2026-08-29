@@ -1,7 +1,11 @@
 import { useAuth } from '@clerk/tanstack-react-start'
 import { usePaginatedQuery, useQuery, useMutation } from 'convex/react'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
+<<<<<<< HEAD
 import { useMemo, useRef, useState } from 'react'
+=======
+import { useEffect, useMemo, useState, useTransition } from 'react'
+>>>>>>> 50283ad (fix(polish): auto-load more while tag-filtered pages are empty)
 import { toast } from 'sonner'
 import { z } from 'zod'
 
@@ -43,7 +47,7 @@ function FeedPage() {
   )
 
   const listArgs = useMemo(
-    () => ({ tag: tag?.toLowerCase() }),
+    () => ({ tag: tag?.toLowerCase().trim() || undefined }),
     [tag],
   )
   const top = usePaginatedQuery(
@@ -65,6 +69,7 @@ function FeedPage() {
   )
   const votedSet = useMemo(() => new Set(votedIds ?? []), [votedIds])
 
+<<<<<<< HEAD
   async function handleVote(botId: Id<'bots'>) {
     if (pendingRef.current.has(botId)) return
     pendingRef.current.add(botId)
@@ -78,12 +83,33 @@ function FeedPage() {
       setPendingVotes(new Set(pendingRef.current))
     }
   }
+=======
+  // Tag filter runs after pagination, so keep loading until a page has
+  // matches or the catalog is exhausted (Convex allows one paginate/query).
+  useEffect(() => {
+    if (!tag) return
+    if (active.status !== 'CanLoadMore') return
+    if (active.results.length >= 20) return
+    active.loadMore(20)
+  }, [tag, active.status, active.results.length, active])
+>>>>>>> 50283ad (fix(polish): auto-load more while tag-filtered pages are empty)
 
   function setTag(next: string | undefined) {
     void navigate({
       search: (prev) => ({ ...prev, tag: next }),
     })
   }
+
+  const showEmpty =
+    active.results.length === 0 &&
+    (active.status === 'Exhausted' || active.status === 'CanLoadMore') ===
+      false &&
+    active.status !== 'LoadingFirstPage' &&
+    active.status !== 'LoadingMore'
+
+  const trulyEmpty =
+    active.results.length === 0 &&
+    active.status === 'Exhausted'
 
   return (
     <main className="page-wrap feed-page">
@@ -107,13 +133,19 @@ function FeedPage() {
           <TabsTrigger value="new">New</TabsTrigger>
         </TabsList>
         <TabsContent value={sort} className="feed-list">
-          {active.status === 'LoadingFirstPage' ? (
+          {active.status === 'LoadingFirstPage' ||
+          (tag &&
+            active.results.length === 0 &&
+            active.status === 'CanLoadMore') ||
+          (tag &&
+            active.results.length === 0 &&
+            active.status === 'LoadingMore') ? (
             <div className="bot-list" aria-busy="true">
               {Array.from({ length: 4 }).map((_, i) => (
                 <Skeleton key={i} className="feed-skeleton" />
               ))}
             </div>
-          ) : active.results.length === 0 ? (
+          ) : trulyEmpty || showEmpty ? (
             <p className="catalog-empty-copy">
               {tag ? `No bots tagged ${tag}` : 'No bots yet'}
             </p>
@@ -137,7 +169,7 @@ function FeedPage() {
             </ul>
           )}
 
-          {active.status === 'CanLoadMore' ? (
+          {active.status === 'CanLoadMore' && active.results.length > 0 ? (
             <Button
               type="button"
               variant="secondary"
@@ -147,7 +179,7 @@ function FeedPage() {
               Load more
             </Button>
           ) : null}
-          {active.status === 'LoadingMore' ? (
+          {active.status === 'LoadingMore' && active.results.length > 0 ? (
             <p className="field-meta">Loading…</p>
           ) : null}
         </TabsContent>
