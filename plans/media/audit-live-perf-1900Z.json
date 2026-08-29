@@ -1,0 +1,32 @@
+{
+  "home": {
+    "status": 200,
+    "median_ms": 14.65
+  },
+  "submit": {
+    "status": 200,
+    "median_ms": 14.86
+  },
+  "tag": {
+    "status": 200,
+    "median_ms": 14.09
+  },
+  "404": {
+    "status": 200,
+    "median_ms": 14.88
+  },
+  "empty": {
+    "status": 200,
+    "median_ms": 14.58
+  },
+  "mcp": {
+    "init_ok": true,
+    "init_median_ms": 6.6,
+    "tools": [
+      "list_bots",
+      "search_bots",
+      "get_bot"
+    ],
+    "budget_pass": true
+  }
+}
