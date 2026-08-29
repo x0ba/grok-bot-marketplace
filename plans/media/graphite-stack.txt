@@ -1,11 +1,9 @@
-Graphite local stack @ 2026-08-29T2043Z
-
-cursor/polish-a3ed     1b4a0f7  PR #6  base mcp
-cursor/mcp-a3ed        fbfb7fb  PR #5  base feed
-cursor/feed-a3ed       c2ca02d  PR #4  base submit
-cursor/submit-a3ed     fa9adfe  PR #3  base foundation
-cursor/foundation-a3ed 24e3a47  PR #2  base main
-
-gt CLI present; gt submit BLOCKED (no auth)
-Clerk secrets missing; human APPROVED reviews 0
-open review threads: 0
+graphite stack @ 2026-08-29T2113Z
+linear (local gt): polish → mcp → feed → submit → foundation → main
+#2 foundation 24e3a47 base main
+#3 submit      fa9adfe base foundation
+#4 feed        c2ca02d base submit
+#5 mcp         fbfb7fb base feed
+#6 polish      5503d53 base mcp
+gt submit: BLOCKED (no Graphite auth token)
+swarm-verify/append: HOLD until reviews + Clerk secrets + Graphite auth
