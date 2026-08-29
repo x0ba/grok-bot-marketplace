@@ -64,3 +64,39 @@ describe('searchBots tag normalize', () => {
     expect(hits.map((b) => b.botId)).toEqual(['peddler'])
   })
 })
+
+describe('listTop sparse tag overscan', () => {
+  it('returns a tagged bot past the first unfiltered page size', async () => {
+    const t = convexTest(schema, modules)
+    await t.run(async (ctx) => {
+      const user = await ctx.db.insert('users', {
+        clerkId: 'u3',
+        name: 'U',
+      })
+      for (let i = 0; i < 12; i++) {
+        await ctx.db.insert('bots', {
+          botId: `filler-${i}`,
+          url: `https://x.ai/bot/filler-${i}`,
+          name: `Filler ${i}`,
+          tags: ['other'],
+          submitterId: user,
+          score: 100 - i,
+        })
+      }
+      await ctx.db.insert('bots', {
+        botId: 'needle',
+        url: 'https://x.ai/bot/needle',
+        name: 'Needle bot',
+        tags: ['travel'],
+        submitterId: user,
+        score: 1,
+      })
+    })
+
+    const page = await t.query(api.feed.listTop, {
+      paginationOpts: { numItems: 10, cursor: null },
+      tag: 'travel',
+    })
+    expect(page.page.map((b) => b.botId)).toContain('needle')
+  })
+})

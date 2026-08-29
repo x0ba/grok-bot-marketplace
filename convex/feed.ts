@@ -29,6 +29,19 @@ function normalizeTagFilter(tag: string | undefined): string | undefined {
   return normalizeTags([tag])[0]
 }
 
+/** Convex allows one paginate() per query, so tag filters overscan then filter. */
+function tagScanOpts(paginationOpts: {
+  numItems: number
+  cursor: string | null
+  id?: number
+}, tag: string | undefined) {
+  if (!tag) return paginationOpts
+  return {
+    ...paginationOpts,
+    numItems: Math.min(Math.max(paginationOpts.numItems * 10, paginationOpts.numItems), 100),
+  }
+}
+
 export const listTop = query({
   args: {
     paginationOpts: paginationOptsValidator,
@@ -36,13 +49,13 @@ export const listTop = query({
   },
   returns: pageResult,
   handler: async (ctx, args) => {
+    const tag = normalizeTagFilter(args.tag)
     const results = await ctx.db
       .query('bots')
       .withIndex('by_score')
       .order('desc')
-      .paginate(args.paginationOpts)
+      .paginate(tagScanOpts(args.paginationOpts, tag))
 
-    const tag = normalizeTagFilter(args.tag)
     const page = tag
       ? results.page.filter((bot) => bot.tags.includes(tag))
       : results.page
@@ -62,12 +75,12 @@ export const listNew = query({
   },
   returns: pageResult,
   handler: async (ctx, args) => {
+    const tag = normalizeTagFilter(args.tag)
     const results = await ctx.db
       .query('bots')
       .order('desc')
-      .paginate(args.paginationOpts)
+      .paginate(tagScanOpts(args.paginationOpts, tag))
 
-    const tag = normalizeTagFilter(args.tag)
     const page = tag
       ? results.page.filter((bot) => bot.tags.includes(tag))
       : results.page
@@ -101,10 +114,11 @@ export const searchBots = query({
   handler: async (ctx, args) => {
     const limit = Math.max(1, Math.min(Math.floor(args.limit), 50))
     const tag = normalizeTagFilter(args.tag)
+    // Tag filter runs after search; scan the full search window (50) then trim.
     const hits = await ctx.db
       .query('bots')
       .withSearchIndex('search_name', (q) => q.search('name', args.query))
-      .take(tag ? Math.min(limit * 5, 50) : limit)
+      .take(tag ? 50 : limit)
 
     const filtered = tag
       ? hits.filter((bot) => bot.tags.includes(tag))
