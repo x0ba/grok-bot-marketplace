@@ -10,6 +10,9 @@ export default function Header() {
           Grok Bot Marketplace
         </Link>
         <div className="site-header-actions">
+          <Link to="/submit" className="nav-text">
+            Submit
+          </Link>
           <HeaderUser />
         </div>
       </div>

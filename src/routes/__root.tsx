@@ -3,6 +3,7 @@ import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
 
 import Header from '#/components/header'
+import { Toaster } from '#/components/ui/sonner'
 import ClerkProvider from '../integrations/clerk/provider'
 import PostHogProvider from '../integrations/posthog/provider'
 import ConvexProvider from '../integrations/convex/provider'
@@ -29,6 +30,7 @@ function RootComponent() {
     <>
       <Header />
       <Outlet />
+      <Toaster theme="dark" position="bottom-right" />
     </>
   )
 }

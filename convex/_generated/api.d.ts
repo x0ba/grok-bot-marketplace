@@ -8,7 +8,9 @@
  * @module
  */
 
+import type * as bots from "../bots.js";
 import type * as lib_auth from "../lib/auth.js";
+import type * as lib_parseBotPage from "../lib/parseBotPage.js";
 
 import type {
   ApiFromModules,
@@ -17,7 +19,9 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
+  bots: typeof bots;
   "lib/auth": typeof lib_auth;
+  "lib/parseBotPage": typeof lib_parseBotPage;
 }>;
 
 /**
