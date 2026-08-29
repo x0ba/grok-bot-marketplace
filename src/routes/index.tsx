@@ -35,7 +35,7 @@ function FeedPage() {
   )
 
   const active = sort === 'top' ? top : newest
-  const botIds = active.results.slice(-40).map((bot) => bot._id)
+  const botIds = active.results.map((bot) => bot._id)
   const votedIds = useQuery(
     api.votes.myVoteBotIds,
     isSignedIn && botIds.length > 0 ? { botIds } : 'skip',

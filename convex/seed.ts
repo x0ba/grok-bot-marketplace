@@ -15,8 +15,9 @@ export const seedBots = internalMutation({
       submitter = (await ctx.db.get(id))!
     }
 
+    const batch = `${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 10)}`
     for (let i = 0; i < count; i++) {
-      const botId = `seed_${i}_${Date.now().toString(36)}`
+      const botId = `seed_${i}_${batch}`
       await ctx.db.insert('bots', {
         botId,
         url: `https://x.ai/bot/${botId}`,
