@@ -53,15 +53,18 @@ export const myVoteBotIds = query({
       .unique()
     if (!user) return []
 
+    // Cap lookup size — clients should pass the visible page window.
+    const wanted = new Set(args.botIds.slice(0, 100))
+    if (wanted.size === 0) return []
+
+    const votes = await ctx.db
+      .query('votes')
+      .withIndex('by_user', (q) => q.eq('userId', user._id))
+      .collect()
+
     const voted: Array<Id<'bots'>> = []
-    for (const botId of args.botIds) {
-      const vote = await ctx.db
-        .query('votes')
-        .withIndex('by_bot_user', (q) =>
-          q.eq('botId', botId).eq('userId', user._id),
-        )
-        .unique()
-      if (vote) voted.push(botId)
+    for (const vote of votes) {
+      if (wanted.has(vote.botId)) voted.push(vote.botId)
     }
     return voted
   },

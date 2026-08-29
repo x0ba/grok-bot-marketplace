@@ -1,7 +1,8 @@
 import { useAuth } from '@clerk/tanstack-react-start'
 import { usePaginatedQuery, useQuery, useMutation } from 'convex/react'
 import { createFileRoute } from '@tanstack/react-router'
-import { useMemo, useState } from 'react'
+import { useMemo, useState, useTransition } from 'react'
+import { toast } from 'sonner'
 
 import { api } from '../../convex/_generated/api'
 import { BotCard } from '#/components/bot-card'
@@ -19,6 +20,8 @@ function FeedPage() {
   const [sort, setSort] = useState<'top' | 'new'>('top')
   const { isSignedIn } = useAuth()
   const toggleUpvote = useMutation(api.votes.toggleUpvote)
+  const [votePending, startVote] = useTransition()
+  const [pendingBotId, setPendingBotId] = useState<string | null>(null)
 
   const listArgs = useMemo(() => ({}), [])
   const top = usePaginatedQuery(
@@ -33,7 +36,7 @@ function FeedPage() {
   )
 
   const active = sort === 'top' ? top : newest
-  const botIds = active.results.map((bot) => bot._id)
+  const botIds = active.results.slice(-40).map((bot) => bot._id)
   const votedIds = useQuery(
     api.votes.myVoteBotIds,
     isSignedIn && botIds.length > 0 ? { botIds } : 'skip',
@@ -70,7 +73,21 @@ function FeedPage() {
                     signedIn={!!isSignedIn}
                     onRequireSignIn={() => undefined}
                     onVote={() => {
-                      void toggleUpvote({ botId: bot._id })
+                      if (votePending && pendingBotId === bot._id) return
+                      setPendingBotId(bot._id)
+                      startVote(async () => {
+                        try {
+                          await toggleUpvote({ botId: bot._id })
+                        } catch (error) {
+                          toast.error(
+                            error instanceof Error
+                              ? error.message
+                              : 'Vote failed',
+                          )
+                        } finally {
+                          setPendingBotId(null)
+                        }
+                      })
                     }}
                   />
                 </li>
