@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MCP review panel — grok-bot-marketplace</title>
+    <style>
+        body { 
+            margin: 40px; 
+            background: #1a1a1a; 
+            color: #e0e0e0; 
+            font-family: monospace;
+        }
+        h1 { color: #4af; }
+        .subtitle { color: #888; margin-bottom: 30px; }
+        button {
+            background: #333;
+            color: white;
+            border: 2px solid #555;
+            padding: 12px 20px;
+            margin: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        button.active { border-color: #4af; }
+        #status { color: #4f4; margin: 20px 0; }
+        #output {
+            background: #000;
+            border: 1px solid #333;
+            padding: 20px;
+            min-height: 300px;
+            white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+            overflow-y: auto;
+            max-height: 500px;
+        }
+    </style>
+</head>
+<body>
+    <h1>MCP catalog tools</h1>
+    <div class="subtitle">POST JSON-RPC against http://127.0.0.1:3000/mcp — list_bots · search_bots · get_bot</div>
+    
+    <div>
+        <button id="btn1" onclick="call1()">1. tools/list</button>
+        <button id="btn2" onclick="call2()">2. list_bots top</button>
+        <button id="btn3" onclick="call3()">3. search_bots Seed</button>
+        <button id="btn4" onclick="call4()">4. get_bot</button>
+        <button id="btn5" onclick="call5()">5. get missing</button>
+    </div>
+    
+    <div id="status"></div>
+    <div id="output">{}</div>
+    
+    <script>
+        let currentBtn = null;
+        
+        // Use static files since CORS prevents direct fetch
+        async function loadStatic(filename) {
+            const response = await fetch(filename);
+            return await response.json();
+        }
+        
+        function setActive(btn) {
+            if (currentBtn) currentBtn.classList.remove('active');
+            currentBtn = btn;
+            btn.classList.add('active');
+        }
+        
+        async function call1() {
+            setActive(document.getElementById('btn1'));
+            document.getElementById('status').textContent = 'Calling tools/list...';
+            try {
+                const result = await loadStatic('mcp-cli-tools-list.json');
+                document.getElementById('output').textContent = JSON.stringify(result, null, 2);
+                document.getElementById('status').textContent = 'Done.';
+            } catch (e) {
+                document.getElementById('output').textContent = 'Error: ' + e.message;
+                document.getElementById('status').textContent = 'Failed.';
+            }
+        }
+        
+        async function call2() {
+            setActive(document.getElementById('btn2'));
+            document.getElementById('status').textContent = 'Calling list_bots (sort=top)...';
+            try {
+                const result = await loadStatic('mcp-cli-list-bots.json');
+                document.getElementById('output').textContent = JSON.stringify(result, null, 2);
+                document.getElementById('status').textContent = 'Done.';
+            } catch (e) {
+                document.getElementById('output').textContent = 'Error: ' + e.message;
+                document.getElementById('status').textContent = 'Failed.';
+            }
+        }
+        
+        async function call3() {
+            setActive(document.getElementById('btn3'));
+            document.getElementById('status').textContent = 'Calling search_bots (query=Seed)...';
+            try {
+                const result = await loadStatic('mcp-cli-search.json');
+                document.getElementById('output').textContent = JSON.stringify(result, null, 2);
+                document.getElementById('status').textContent = 'Done.';
+            } catch (e) {
+                document.getElementById('output').textContent = 'Error: ' + e.message;
+                document.getElementById('status').textContent = 'Failed.';
+            }
+        }
+        
+        async function call4() {
+            setActive(document.getElementById('btn4'));
+            document.getElementById('status').textContent = 'Calling get_bot (botId=01234567-89ab-cdef-0123-456789abcdef)...';
+            try {
+                const result = await loadStatic('mcp-cli-get-bot.json');
+                document.getElementById('output').textContent = JSON.stringify(result, null, 2);
+                document.getElementById('status').textContent = 'Done.';
+            } catch (e) {
+                document.getElementById('output').textContent = 'Error: ' + e.message;
+                document.getElementById('status').textContent = 'Failed.';
+            }
+        }
+        
+        async function call5() {
+            setActive(document.getElementById('btn5'));
+            document.getElementById('status').textContent = 'Calling get_bot (botId=missing-bot-id)...';
+            try {
+                const result = await loadStatic('mcp-cli-get-missing.json');
+                document.getElementById('output').textContent = JSON.stringify(result, null, 2);
+                document.getElementById('status').textContent = 'Done.';
+            } catch (e) {
+                document.getElementById('output').textContent = 'Error: ' + e.message;
+                document.getElementById('status').textContent = 'Failed.';
+            }
+        }
+    </script>
+</body>
+</html>
