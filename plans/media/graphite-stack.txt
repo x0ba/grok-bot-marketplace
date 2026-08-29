@@ -1,6 +1,6 @@
-Graphite local stack @ 2026-08-29T16:34Z
+Graphite local stack @ 2026-08-29T17:08Z
 
-cursor/polish-a3ed     5c173ba  PR #6  base mcp
+cursor/polish-a3ed     ca414b0  PR #6  base mcp  (OTP scrub commit pending)
 cursor/mcp-a3ed        fbfb7fb  PR #5  base feed
 cursor/feed-a3ed       c2ca02d  PR #4  base submit
 cursor/submit-a3ed     fa9adfe  PR #3  base foundation

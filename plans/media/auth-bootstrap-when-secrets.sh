@@ -32,4 +32,4 @@ upsert_env() {
 upsert_env VITE_CLERK_PUBLISHABLE_KEY "$VITE_CLERK_PUBLISHABLE_KEY"
 upsert_env CLERK_SECRET_KEY "$CLERK_SECRET_KEY"
 
-echo "Wrote Clerk secrets into .env.local — restart vite-dev, then sign in with *+clerk_test@example.com / 424242"
+echo "Wrote Clerk secrets into .env.local — restart vite-dev, then sign in with a Clerk *+clerk_test@example.com account (use Clerk's documented test OTP for that address pattern)."

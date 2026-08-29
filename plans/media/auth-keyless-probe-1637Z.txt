@@ -1,5 +1,5 @@
 auth keyless probe @ 2026-08-29T16:37Z tip ac4ede2
 Clerk keyless banner present without VITE_CLERK_PUBLISHABLE_KEY/CLERK_SECRET_KEY.
 computerUse could not open SignInButton modal in this session (prior foundation-review-sign-in-modal.webp shows modal can appear).
-Test account +clerk_test@example.com / 424242 NOT exercised.
+Test account +clerk_test@example.com NOT exercised; OTP omitted from this receipt.
 Verdict: auth live lanes remain BLOCKED pending operator Clerk secrets (not satisfiable via keyless alone for Convex JWT).
