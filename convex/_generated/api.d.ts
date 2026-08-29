@@ -9,8 +9,11 @@
  */
 
 import type * as bots from "../bots.js";
+import type * as feed from "../feed.js";
 import type * as lib_auth from "../lib/auth.js";
 import type * as lib_parseBotPage from "../lib/parseBotPage.js";
+import type * as seed from "../seed.js";
+import type * as votes from "../votes.js";
 
 import type {
   ApiFromModules,
@@ -20,8 +23,11 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   bots: typeof bots;
+  feed: typeof feed;
   "lib/auth": typeof lib_auth;
   "lib/parseBotPage": typeof lib_parseBotPage;
+  seed: typeof seed;
+  votes: typeof votes;
 }>;
 
 /**

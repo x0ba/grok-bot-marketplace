@@ -30,5 +30,7 @@ export default defineSchema({
   votes: defineTable({
     botId: v.id('bots'),
     userId: v.id('users'),
-  }).index('by_bot_user', ['botId', 'userId']),
+  })
+    .index('by_bot_user', ['botId', 'userId'])
+    .index('by_user', ['userId']),
 })

@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as McpRouteImport } from './routes/mcp'
 import { Route as SubmitRouteImport } from './routes/submit'
+import { Route as BotBotIdRouteImport } from './routes/bot.$botId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -28,35 +29,44 @@ const SubmitRoute = SubmitRouteImport.update({
   path: '/submit',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BotBotIdRoute = BotBotIdRouteImport.update({
+  id: '/bot/$botId',
+  path: '/bot/$botId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/mcp': typeof McpRoute
   '/submit': typeof SubmitRoute
+  '/bot/$botId': typeof BotBotIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/mcp': typeof McpRoute
   '/submit': typeof SubmitRoute
+  '/bot/$botId': typeof BotBotIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/mcp': typeof McpRoute
   '/submit': typeof SubmitRoute
+  '/bot/$botId': typeof BotBotIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/mcp' | '/submit'
+  fullPaths: '/' | '/mcp' | '/submit' | '/bot/$botId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/mcp' | '/submit'
-  id: '__root__' | '/' | '/mcp' | '/submit'
+  to: '/' | '/mcp' | '/submit' | '/bot/$botId'
+  id: '__root__' | '/' | '/mcp' | '/submit' | '/bot/$botId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   McpRoute: typeof McpRoute
   SubmitRoute: typeof SubmitRoute
+  BotBotIdRoute: typeof BotBotIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -82,6 +92,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SubmitRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/bot/$botId': {
+      id: '/bot/$botId'
+      path: '/bot/$botId'
+      fullPath: '/bot/$botId'
+      preLoaderRoute: typeof BotBotIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -89,6 +106,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   McpRoute: McpRoute,
   SubmitRoute: SubmitRoute,
+  BotBotIdRoute: BotBotIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
