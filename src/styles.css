@@ -538,8 +538,11 @@ a:hover {
   min-width: 0;
 }
 
-.tag-filter .badge {
+.tag-filter [data-slot='badge'] {
   max-width: 100%;
+  min-width: 0;
+  flex-shrink: 1;
+  white-space: normal;
   overflow-wrap: anywhere;
 }
 

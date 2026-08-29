@@ -1,6 +1,6 @@
-Graphite local stack @ 2026-08-29T12:46Z
+Graphite local stack @ 2026-08-29T12:48Z
 
-cursor/polish-a3ed     36a96b5  PR #6  base mcp
+cursor/polish-a3ed     962459b  PR #6  base mcp
 cursor/mcp-a3ed        fbfb7fb  PR #5  base feed
 cursor/feed-a3ed       c2ca02d  PR #4  base submit
 cursor/submit-a3ed     fa9adfe  PR #3  base foundation
@@ -8,4 +8,3 @@ cursor/foundation-a3ed 24e3a47  PR #2  base main
 
 gt CLI present; gt submit BLOCKED (no auth)
 Clerk secrets missing; human APPROVED reviews 0
-Restack: feed vote-race → mcp rebase → polish rebase (patch-id drifted; re-verified non-auth)
