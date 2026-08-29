@@ -1,0 +1,17 @@
+audit tick @ 2026-08-29T15:58Z (marketplace-audit-30m delivery #29, fired ~15:37Z, processed 15:58Z)
+playbook: origin/main lacks pstack/ — used plugin-cache autopilot-stack.md
+goal: HOLD review + Clerk + Graphite; do not merge; auth lanes when secrets land
+stack linear: foundation→submit→feed→mcp→polish YES
+heads: #2 24e3a47 #3 fa9adfe #4 c2ca02d #5 fbfb7fb #6 bacb25e
+side effects since 15:27 tick: PR Review Gate media links; polish non-auth lane receipts (tag-clear/empty/titles/mobile/og) → tip bacb25e
+unit: 25/25 PASS @ bacb25e
+live non-auth: / 200, /submit 200, /?tag=demo 200, /bot/doesnotexist000 200, /?tag=zzznomatch999 200; MCP init OK; tools list_bots,search_bots,get_bot
+perf non-auth: home median 13.33ms; MCP init median 6.06ms (budget 300ms PASS)
+human APPROVED: 0 across #2–#6
+open review threads (non-outdated): 0
+merged program PRs: none
+Clerk secrets: ABSENT
+Graphite auth: ABSENT
+stuck owner lanes: none — review/Clerk/Graphite are operator gates (not stuck owners)
+auth live still blocked: keyboard vote, submit error-toast, foundation/submit/feed auth lanes
+timer: marketplace-audit-30m remains armed (deliveryCount 29)
