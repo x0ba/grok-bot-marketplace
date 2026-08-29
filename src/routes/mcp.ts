@@ -123,11 +123,16 @@ function createCatalogServer() {
   return server
 }
 
+async function mcpHandler({ request }: { request: Request }) {
+  return handleMcpRequest(request, createCatalogServer())
+}
+
 export const Route = createFileRoute('/mcp')({
   server: {
     handlers: {
-      POST: async ({ request }) =>
-        handleMcpRequest(request, createCatalogServer()),
+      GET: mcpHandler,
+      POST: mcpHandler,
+      DELETE: mcpHandler,
     },
   },
 })
