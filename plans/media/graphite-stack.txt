@@ -1,6 +1,6 @@
-Graphite local stack @ 2026-08-29T17:08Z
+Graphite local stack @ 2026-08-29T17:18Z
 
-cursor/polish-a3ed     93473ed  PR #6  base mcp
+cursor/polish-a3ed     43cf286  PR #6  base mcp
 cursor/mcp-a3ed        fbfb7fb  PR #5  base feed
 cursor/feed-a3ed       c2ca02d  PR #4  base submit
 cursor/submit-a3ed     fa9adfe  PR #3  base foundation
@@ -8,3 +8,4 @@ cursor/foundation-a3ed 24e3a47  PR #2  base main
 
 gt CLI present; gt submit BLOCKED (no auth)
 Clerk secrets missing; human APPROVED reviews 0
+open review threads: 0
