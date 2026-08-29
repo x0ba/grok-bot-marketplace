@@ -25,14 +25,30 @@ function BotDetailPage() {
   const bot = useQuery(api.feed.getByBotId, { botId })
 
   useEffect(() => {
-    if (bot?.name) {
-      document.title = bot.name
+    if (bot === undefined) return
+    if (bot === null) {
+      document.title = 'Bot not found · Grok Bot Marketplace'
       const ogTitle = document.querySelector('meta[property="og:title"]')
-      if (ogTitle) ogTitle.setAttribute('content', bot.name)
-      if (bot.description) {
-        const ogDesc = document.querySelector('meta[property="og:description"]')
-        if (ogDesc) ogDesc.setAttribute('content', bot.description)
+      if (ogTitle) ogTitle.setAttribute('content', 'Bot not found')
+      const ogDesc = document.querySelector('meta[property="og:description"]')
+      if (ogDesc) {
+        ogDesc.setAttribute(
+          'content',
+          'Shared Grok bot template on Grok Bot Marketplace',
+        )
       }
+      return
+    }
+
+    document.title = bot.name
+    const ogTitle = document.querySelector('meta[property="og:title"]')
+    if (ogTitle) ogTitle.setAttribute('content', bot.name)
+    const ogDesc = document.querySelector('meta[property="og:description"]')
+    if (ogDesc) {
+      ogDesc.setAttribute(
+        'content',
+        bot.description ?? 'Shared Grok bot template on Grok Bot Marketplace',
+      )
     }
   }, [bot])
 

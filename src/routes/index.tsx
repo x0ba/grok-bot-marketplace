@@ -62,7 +62,8 @@ function FeedPage() {
   )
 
   const active = sort === 'top' ? top : newest
-  const botIds = active.results.map((bot) => bot._id)
+  // myVoteBotIds caps at 200 indexed lookups per query.
+  const botIds = active.results.map((bot) => bot._id).slice(0, 200)
   const votedIds = useQuery(
     api.votes.myVoteBotIds,
     isSignedIn && botIds.length > 0 ? { botIds } : 'skip',
