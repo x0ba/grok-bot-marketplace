@@ -21,7 +21,6 @@ function FeedPage() {
   const { isSignedIn } = useAuth()
   const toggleUpvote = useMutation(api.votes.toggleUpvote)
   const [votePending, startVote] = useTransition()
-  const [pendingBotId, setPendingBotId] = useState<string | null>(null)
 
   const listArgs = useMemo(() => ({}), [])
   const top = usePaginatedQuery(
