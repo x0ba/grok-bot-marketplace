@@ -59,6 +59,17 @@ describe('parseBotPage', () => {
     expect(parsed?.promptExcerpt).toBe('Say "hello" then go')
   })
 
+  it('decodes numeric entities and ignores data-property', () => {
+    const html = `<html><head>
+<meta data-property="og:title" content="wrong"/>
+<meta property="og:title" content="right &#x26; good by Ada"/>
+<meta property="og:description" content="A &gt; B"/>
+</head></html>`
+    const parsed = parseBotPage(html)
+    expect(parsed?.name).toBe('right & good')
+    expect(parsed?.promptExcerpt).toBe('A > B')
+  })
+
   it('handles a title with no by suffix', () => {
     const html =
       '<html><head><meta property="og:title" content="solo bot"/></head></html>'

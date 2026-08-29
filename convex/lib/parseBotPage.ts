@@ -38,9 +38,21 @@ export function validateBotUrl(raw: string): ValidBotUrl | null {
 
 function decodeHtmlEntities(value: string): string {
   return value
+    .replace(/&nbsp;/gi, ' ')
+    .replace(/&copy;/gi, '©')
+    .replace(/&reg;/gi, '®')
+    .replace(/&mdash;/gi, '—')
+    .replace(/&ndash;/gi, '–')
+    .replace(/&#x([0-9a-f]+);/gi, (_, hex: string) =>
+      String.fromCodePoint(Number.parseInt(hex, 16)),
+    )
+    .replace(/&#(\d+);/g, (_, dec: string) =>
+      String.fromCodePoint(Number.parseInt(dec, 10)),
+    )
     .replace(/&#x27;/gi, "'")
     .replace(/&#39;/gi, "'")
     .replace(/&quot;/gi, '"')
+    .replace(/&apos;/gi, "'")
     .replace(/&amp;/gi, '&')
     .replace(/&lt;/gi, '<')
     .replace(/&gt;/gi, '>')
@@ -48,13 +60,13 @@ function decodeHtmlEntities(value: string): string {
 
 function metaAttr(tag: string, name: string): string | undefined {
   const doubleQuoted = tag.match(
-    new RegExp(`\\b${name}\\s*=\\s*"([^"]*)"`, 'i'),
+    new RegExp(`(?:^|[\\s])${name}\\s*=\\s*"([^"]*)"`, 'i'),
   )
   if (doubleQuoted?.[1] !== undefined) {
     return decodeHtmlEntities(doubleQuoted[1])
   }
   const singleQuoted = tag.match(
-    new RegExp(`\\b${name}\\s*=\\s*'([^']*)'`, 'i'),
+    new RegExp(`(?:^|[\\s])${name}\\s*=\\s*'([^']*)'`, 'i'),
   )
   if (singleQuoted?.[1] !== undefined) {
     return decodeHtmlEntities(singleQuoted[1])
@@ -63,7 +75,7 @@ function metaAttr(tag: string, name: string): string | undefined {
 }
 
 function metaContent(html: string, property: string): string | undefined {
-  const metaTags = html.match(/<meta\b[^>]*>/gi) ?? []
+  const metaTags = html.match(/<meta\b(?:[^>"']|"[^"]*"|'[^']*')*>/gi) ?? []
   for (const tag of metaTags) {
     if (metaAttr(tag, 'property') !== property) continue
     const content = metaAttr(tag, 'content')
