@@ -36,6 +36,18 @@ export function validateBotUrl(raw: string): ValidBotUrl | null {
   }
 }
 
+function codePointFromEntity(raw: string, radix: number): string {
+  const value = Number.parseInt(raw, radix)
+  if (!Number.isFinite(value) || value < 0 || value > 0x10ffff) {
+    return ''
+  }
+  try {
+    return String.fromCodePoint(value)
+  } catch {
+    return ''
+  }
+}
+
 function decodeHtmlEntities(value: string): string {
   return value
     .replace(/&nbsp;/gi, ' ')
@@ -44,11 +56,9 @@ function decodeHtmlEntities(value: string): string {
     .replace(/&mdash;/gi, '—')
     .replace(/&ndash;/gi, '–')
     .replace(/&#x([0-9a-f]+);/gi, (_, hex: string) =>
-      String.fromCodePoint(Number.parseInt(hex, 16)),
+      codePointFromEntity(hex, 16),
     )
-    .replace(/&#(\d+);/g, (_, dec: string) =>
-      String.fromCodePoint(Number.parseInt(dec, 10)),
-    )
+    .replace(/&#(\d+);/g, (_, dec: string) => codePointFromEntity(dec, 10))
     .replace(/&#x27;/gi, "'")
     .replace(/&#39;/gi, "'")
     .replace(/&quot;/gi, '"')

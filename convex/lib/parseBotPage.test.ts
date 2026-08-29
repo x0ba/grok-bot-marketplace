@@ -70,6 +70,14 @@ describe('parseBotPage', () => {
     expect(parsed?.promptExcerpt).toBe('A > B')
   })
 
+  it('ignores out-of-range numeric entities instead of throwing', () => {
+    const html = `<html><head>
+<meta property="og:title" content="safe &#x110000; bot by Ada"/>
+</head></html>`
+    expect(() => parseBotPage(html)).not.toThrow()
+    expect(parseBotPage(html)?.name).toContain('safe')
+  })
+
   it('handles a title with no by suffix', () => {
     const html =
       '<html><head><meta property="og:title" content="solo bot"/></head></html>'
