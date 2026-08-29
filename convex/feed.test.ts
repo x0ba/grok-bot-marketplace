@@ -39,7 +39,7 @@ describe('feed listTop tag filter', () => {
 })
 
 describe('searchBots tag normalize', () => {
-  it('matches trimmed tag filters', async () => {
+  it('matches trimmed tags and excludes other tags in the search window', async () => {
     const t = convexTest(schema, modules)
     await t.run(async (ctx) => {
       const user = await ctx.db.insert('users', {
@@ -54,10 +54,18 @@ describe('searchBots tag normalize', () => {
         submitterId: user,
         score: 3,
       })
+      await ctx.db.insert('bots', {
+        botId: 'other',
+        url: 'https://x.ai/bot/other',
+        name: 'point other',
+        tags: ['tools'],
+        submitterId: user,
+        score: 2,
+      })
     })
 
     const hits = await t.query(api.feed.searchBots, {
-      query: 'peddler',
+      query: 'point',
       tag: ' travel ',
       limit: 10,
     })

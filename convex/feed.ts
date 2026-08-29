@@ -114,7 +114,8 @@ export const searchBots = query({
   handler: async (ctx, args) => {
     const limit = Math.max(1, Math.min(Math.floor(args.limit), 50))
     const tag = normalizeTagFilter(args.tag)
-    // Tag filter runs after search; scan the full search window (50) then trim.
+    // Search index filterFields on array tags are unreliable for equality in
+    // this runtime; scan the full 50-hit window then filter in TypeScript.
     const hits = await ctx.db
       .query('bots')
       .withSearchIndex('search_name', (q) => q.search('name', args.query))

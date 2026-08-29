@@ -6,7 +6,10 @@ export const seedBots = internalMutation({
   returns: v.number(),
   handler: async (ctx, args) => {
     const count = Math.max(0, Math.min(Math.floor(args.n), 500))
-    let submitter = await ctx.db.query('users').first()
+    let submitter = await ctx.db
+      .query('users')
+      .withIndex('by_clerkId', (q) => q.eq('clerkId', 'seed_user'))
+      .unique()
     if (!submitter) {
       const id = await ctx.db.insert('users', {
         clerkId: 'seed_user',
