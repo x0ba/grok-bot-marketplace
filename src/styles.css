@@ -374,6 +374,161 @@ a:hover {
   text-wrap: pretty;
 }
 
+.feed-page {
+  padding-block: 2rem 4rem;
+}
+
+.feed-header {
+  margin-bottom: 1.25rem;
+}
+
+.feed-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.75rem;
+  letter-spacing: -0.04em;
+}
+
+.feed-lede {
+  margin: 0.4rem 0 0;
+  color: var(--ink-soft);
+  font-size: 0.9375rem;
+}
+
+.feed-list {
+  margin-top: 1rem;
+}
+
+.bot-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.bot-row {
+  display: grid;
+  grid-template-columns: 3rem minmax(0, 1fr);
+  gap: 0.75rem;
+  align-items: start;
+  padding: 0.85rem 0.5rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.bot-row-name {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.125rem;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+}
+
+.bot-row-name:hover {
+  color: var(--signal);
+}
+
+.bot-row-creator {
+  margin: 0.15rem 0 0;
+  color: var(--ink-soft);
+  font-size: 0.8125rem;
+}
+
+.bot-row-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  list-style: none;
+  margin: 0.45rem 0 0;
+  padding: 0;
+}
+
+.vote-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.15rem;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  padding: 0.35rem;
+  border: 1px solid transparent;
+  border-radius: 0.375rem;
+  background: transparent;
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+
+.vote-btn:hover {
+  border-color: var(--line);
+  color: var(--ink);
+}
+
+.vote-btn:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 2px;
+}
+
+.vote-btn.is-voted,
+.vote-btn.is-voted .vote-arrow {
+  color: var(--signal);
+}
+
+.vote-arrow {
+  font-size: 0.7rem;
+  line-height: 1;
+}
+
+.vote-score {
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.feed-more {
+  margin-top: 1.25rem;
+}
+
+.bot-detail {
+  padding-block: 2rem 4rem;
+  max-width: 40rem;
+}
+
+.bot-detail-name {
+  margin: 0.5rem 0 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 2rem;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+}
+
+.bot-detail-score {
+  margin: 0.75rem 0 0;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-soft);
+  font-size: 0.875rem;
+}
+
+.bot-detail-copy {
+  margin: 1rem 0 0;
+  color: var(--ink-soft);
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+
+.bot-detail-excerpt {
+  border-left: 2px solid var(--line-strong);
+  padding-left: 0.85rem;
+}
+
+.bot-detail-cta {
+  margin-top: 1.5rem;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .clerk-sign-in {
     transition: none;
