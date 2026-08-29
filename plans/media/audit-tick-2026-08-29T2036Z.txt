@@ -2,7 +2,7 @@ audit tick @ 2026-08-29T2036Z (marketplace-audit-30m ~delivery)
 playbook: origin/main lacks pstack/ — used plugin-cache autopilot-stack.md
 goal: HOLD review + Clerk + Graphite; do not merge; auth lanes when secrets land
 stack linear: foundation→submit→feed→mcp→polish YES
-heads: #2 24e3a47 #3 fa9adfe #4 c2ca02d #5 fbfb7fb #6 a4551f7
+heads: #2 24e3a47 #3 fa9adfe #4 c2ca02d #5 fbfb7fb #6 50e10c1
 side effects since 20:06 tick: disk ENOSPC on /tmp vitest — worked around via TMPDIR=/dev/shm; killed stale chrome; cleaned /tmp profiles
 unit: 25/25 PASS (TMPDIR=/dev/shm)
 live non-auth: / 200, /submit 200, /?tag=demo 200, 404 HTTP 404, empty-tag 200; MCP init OK; tools list_bots,search_bots,get_bot
