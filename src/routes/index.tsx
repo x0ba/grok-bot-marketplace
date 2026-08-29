@@ -1,11 +1,7 @@
 import { useAuth } from '@clerk/tanstack-react-start'
 import { usePaginatedQuery, useQuery, useMutation } from 'convex/react'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
-<<<<<<< HEAD
-import { useMemo, useRef, useState } from 'react'
-=======
-import { useEffect, useMemo, useState, useTransition } from 'react'
->>>>>>> 50283ad (fix(polish): auto-load more while tag-filtered pages are empty)
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
@@ -36,7 +32,11 @@ export const Route = createFileRoute('/')({
 })
 
 function FeedPage() {
-  const { tag } = Route.useSearch()
+  const { tag: rawTag } = Route.useSearch()
+  const tag = useMemo(() => {
+    const trimmed = rawTag?.trim().toLowerCase().slice(0, 24)
+    return trimmed || undefined
+  }, [rawTag])
   const navigate = useNavigate({ from: Route.fullPath })
   const [sort, setSort] = useState<'top' | 'new'>('top')
   const { isSignedIn } = useAuth()
@@ -46,10 +46,7 @@ function FeedPage() {
     () => new Set<Id<'bots'>>(),
   )
 
-  const listArgs = useMemo(
-    () => ({ tag: tag?.toLowerCase().trim() || undefined }),
-    [tag],
-  )
+  const listArgs = useMemo(() => ({ tag }), [tag])
   const top = usePaginatedQuery(
     api.feed.listTop,
     sort === 'top' ? listArgs : 'skip',
@@ -69,7 +66,15 @@ function FeedPage() {
   )
   const votedSet = useMemo(() => new Set(votedIds ?? []), [votedIds])
 
-<<<<<<< HEAD
+  // Tag filter runs after pagination, so keep loading until a page has
+  // matches or the catalog is exhausted (Convex allows one paginate/query).
+  useEffect(() => {
+    if (!tag) return
+    if (active.status !== 'CanLoadMore') return
+    if (active.results.length >= 20) return
+    active.loadMore(20)
+  }, [tag, active.status, active.results.length, active])
+
   async function handleVote(botId: Id<'bots'>) {
     if (pendingRef.current.has(botId)) return
     pendingRef.current.add(botId)
@@ -83,16 +88,6 @@ function FeedPage() {
       setPendingVotes(new Set(pendingRef.current))
     }
   }
-=======
-  // Tag filter runs after pagination, so keep loading until a page has
-  // matches or the catalog is exhausted (Convex allows one paginate/query).
-  useEffect(() => {
-    if (!tag) return
-    if (active.status !== 'CanLoadMore') return
-    if (active.results.length >= 20) return
-    active.loadMore(20)
-  }, [tag, active.status, active.results.length, active])
->>>>>>> 50283ad (fix(polish): auto-load more while tag-filtered pages are empty)
 
   function setTag(next: string | undefined) {
     void navigate({
@@ -100,14 +95,15 @@ function FeedPage() {
     })
   }
 
-  const showEmpty =
+  const filteringEmpty =
+    !!tag &&
     active.results.length === 0 &&
-    (active.status === 'Exhausted' || active.status === 'CanLoadMore') ===
-      false &&
-    active.status !== 'LoadingFirstPage' &&
-    active.status !== 'LoadingMore'
+    (active.status === 'CanLoadMore' || active.status === 'LoadingMore')
 
-  const trulyEmpty =
+  const showSkeleton =
+    active.status === 'LoadingFirstPage' || filteringEmpty
+
+  const showEmpty =
     active.results.length === 0 &&
     active.status === 'Exhausted'
 
@@ -133,19 +129,13 @@ function FeedPage() {
           <TabsTrigger value="new">New</TabsTrigger>
         </TabsList>
         <TabsContent value={sort} className="feed-list">
-          {active.status === 'LoadingFirstPage' ||
-          (tag &&
-            active.results.length === 0 &&
-            active.status === 'CanLoadMore') ||
-          (tag &&
-            active.results.length === 0 &&
-            active.status === 'LoadingMore') ? (
+          {showSkeleton ? (
             <div className="bot-list" aria-busy="true">
               {Array.from({ length: 4 }).map((_, i) => (
                 <Skeleton key={i} className="feed-skeleton" />
               ))}
             </div>
-          ) : trulyEmpty || showEmpty ? (
+          ) : showEmpty ? (
             <p className="catalog-empty-copy">
               {tag ? `No bots tagged ${tag}` : 'No bots yet'}
             </p>
