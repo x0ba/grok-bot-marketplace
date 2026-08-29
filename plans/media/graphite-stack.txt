@@ -1,8 +1,8 @@
-Graphite local stack @ 2026-08-29T08:10Z
+Graphite local stack @ 2026-08-29T09:33Z
 
-cursor/polish-a3ed     a18d49b  PR #6  base mcp
-cursor/mcp-a3ed        a55efb9            PR #5  base feed  — Streamable HTTP
-cursor/feed-a3ed       4dbb5c8            PR #4  base submit
+cursor/polish-a3ed     69a2231  PR #6  base mcp
+cursor/mcp-a3ed        2604c21            PR #5  base feed
+cursor/feed-a3ed       111a1a7            PR #4  base submit
 cursor/submit-a3ed     fa9adfe            PR #3  base foundation
 cursor/foundation-a3ed 24e3a47            PR #2  base main
 
