@@ -1,0 +1,40 @@
+◉ cursor/polish-a3ed (current)
+│ 45 minutes ago
+│ 
+│ 6e6f90a - fix(polish): normalize shareable tag filters and review media
+│ 6813e29 - chore(polish): record non-auth browser perf and MCP live receipts
+│ ac5189b - chore(polish): add non-auth live receipts and clarify tag empty UI
+│ 5b1f796 - fix(polish): auto-load more while tag-filtered pages are empty
+│ 724a175 - chore: ignore local convex.db artifact
+│ ecc8153 - feat(polish): tag filter, skeletons, titles, and 404 state
+│
+◯ cursor/mcp-a3ed
+│ 45 minutes ago
+│ 
+│ da39fbb - fix(mcp): read Vite Convex URL and accept notifications
+│ 468671c - fix(mcp): await tool responses instead of a 10ms sleep
+│ 60a95a7 - fix(mcp): create a fresh McpServer per request
+│ 5e5280b - feat(mcp): expose catalog over list, search, and get tools
+│
+◯ cursor/feed-a3ed
+│ 46 minutes ago
+│ 
+│ ec6d238 - fix(feed): unique seed ids and accurate vote indicators
+│ 91d6be7 - fix(feed): finish vote in-flight guard without pendingBotId
+│ 845d921 - fix(feed): block all votes while one upvote is in flight
+│ 6a6928b - fix(feed): normalize tag filters, vote errors, vote lookup scale
+│ c9c478b - feat(feed): rank catalog and toggle upvotes
+│
+◯ cursor/submit-a3ed
+│ 47 minutes ago
+│ 
+│ 842fa6f - fix(submit): ignore out-of-range HTML numeric entities
+│ 8f0bec3 - fix(submit): harden OG meta attribute parsing
+│ 0d5dfbd - fix(submit): use request ref for preview race guard
+│ 7137118 - fix(submit): clear stale preview, harden OG parse, auth preview
+│ 60b62f1 - feat(submit): parse x.ai bot links and take submissions
+│
+◯ cursor/foundation-a3ed
+│ 4 hours ago
+│ 
+│ 24e3a47 - chore(foundation): add Sign in modal screenshot for review
