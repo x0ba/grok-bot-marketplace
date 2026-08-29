@@ -2,7 +2,7 @@ audit tick @ 2026-08-29T2043Z (marketplace-audit-30m timer fire)
 playbook: origin/main lacks pstack/ — used plugin-cache autopilot-stack.md
 goal: HOLD review + Clerk + Graphite; do not merge; auth lanes when secrets land
 stack linear: foundation→submit→feed→mcp→polish YES
-heads: #2 24e3a47 #3 fa9adfe #4 c2ca02d #5 fbfb7fb #6 0779305
+heads: #2 24e3a47 #3 fa9adfe #4 c2ca02d #5 fbfb7fb #6 1b4a0f7
 side effects since 20:36 tick: none — gates unchanged
 unit: 25/25 PASS (TMPDIR=/dev/shm)
 live non-auth: / 200, /submit 200, /?tag=demo 200, 404 HTTP 404, empty-tag 200; MCP init OK; tools list_bots,search_bots,get_bot
