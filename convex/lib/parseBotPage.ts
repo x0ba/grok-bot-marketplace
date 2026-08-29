@@ -46,20 +46,28 @@ function decodeHtmlEntities(value: string): string {
     .replace(/&gt;/gi, '>')
 }
 
+function metaAttr(tag: string, name: string): string | undefined {
+  const doubleQuoted = tag.match(
+    new RegExp(`\\b${name}\\s*=\\s*"([^"]*)"`, 'i'),
+  )
+  if (doubleQuoted?.[1] !== undefined) {
+    return decodeHtmlEntities(doubleQuoted[1])
+  }
+  const singleQuoted = tag.match(
+    new RegExp(`\\b${name}\\s*=\\s*'([^']*)'`, 'i'),
+  )
+  if (singleQuoted?.[1] !== undefined) {
+    return decodeHtmlEntities(singleQuoted[1])
+  }
+  return undefined
+}
+
 function metaContent(html: string, property: string): string | undefined {
-  const patterns = [
-    new RegExp(
-      `<meta[^>]+property=["']${property}["'][^>]+content=["']([^"']*)["'][^>]*>`,
-      'i',
-    ),
-    new RegExp(
-      `<meta[^>]+content=["']([^"']*)["'][^>]+property=["']${property}["'][^>]*>`,
-      'i',
-    ),
-  ]
-  for (const pattern of patterns) {
-    const match = html.match(pattern)
-    if (match?.[1]) return decodeHtmlEntities(match[1])
+  const metaTags = html.match(/<meta\b[^>]*>/gi) ?? []
+  for (const tag of metaTags) {
+    if (metaAttr(tag, 'property') !== property) continue
+    const content = metaAttr(tag, 'content')
+    if (content) return content
   }
   return undefined
 }

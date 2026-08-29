@@ -50,6 +50,15 @@ describe('parseBotPage', () => {
     expect(parsed?.promptExcerpt).toContain('award-travel')
   })
 
+  it('keeps og:description when content contains the other quote', () => {
+    const html = `<html><head>
+<meta property="og:title" content="quoted bot by Ada"/>
+<meta property='og:description' content='Say "hello" then go'/>
+</head></html>`
+    const parsed = parseBotPage(html)
+    expect(parsed?.promptExcerpt).toBe('Say "hello" then go')
+  })
+
   it('handles a title with no by suffix', () => {
     const html =
       '<html><head><meta property="og:title" content="solo bot"/></head></html>'

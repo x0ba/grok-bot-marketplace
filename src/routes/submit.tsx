@@ -1,7 +1,7 @@
 import { useAuth, Show, SignInButton } from '@clerk/tanstack-react-start'
 import { useAction } from 'convex/react'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { useState, useTransition } from 'react'
+import { useRef, useState, useTransition } from 'react'
 import { toast } from 'sonner'
 
 import { api } from '../../convex/_generated/api'
@@ -65,6 +65,7 @@ function SubmitForm() {
   const [description, setDescription] = useState('')
   const [previewPending, startPreview] = useTransition()
   const [publishPending, startPublish] = useTransition()
+  const [previewRequestId, setPreviewRequestId] = useState(0)
 
   function onUrlBlur() {
     const valid = validateBotUrl(url)
@@ -79,18 +80,30 @@ function SubmitForm() {
     }
     setUrlError(null)
     setDuplicateBotId(null)
+    const requestId = previewRequestId + 1
+    setPreviewRequestId(requestId)
     startPreview(async () => {
       try {
         const result = await fetchPreview({ url: valid.url })
-        setPreview(result)
-        setUrl(valid.url)
+        setPreviewRequestId((current) => {
+          if (current === requestId) {
+            setPreview(result)
+            setUrl(valid.url)
+          }
+          return current
+        })
       } catch (error) {
-        setPreview(null)
-        setUrlError(
-          error instanceof Error
-            ? error.message
-            : 'The bot page could not be read.',
-        )
+        setPreviewRequestId((current) => {
+          if (current === requestId) {
+            setPreview(null)
+            setUrlError(
+              error instanceof Error
+                ? error.message
+                : 'The bot page could not be read.',
+            )
+          }
+          return current
+        })
       }
     })
   }
@@ -165,6 +178,8 @@ function SubmitForm() {
                 setUrl(e.target.value)
                 setUrlError(null)
                 setDuplicateBotId(null)
+                setPreview(null)
+                setPreviewRequestId((id) => id + 1)
               }}
               onBlur={onUrlBlur}
               onKeyDown={(e) => {
@@ -234,7 +249,7 @@ function SubmitForm() {
             <Textarea
               id="description"
               value={description}
-              maxLength={600}
+              maxLength={500}
               rows={4}
               placeholder="Optional note for browsers (max 500)"
               onChange={(e) => setDescription(e.target.value)}

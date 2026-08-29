@@ -58,7 +58,11 @@ async function fetchAndParse(url: string) {
 export const fetchBotPreview = action({
   args: { url: v.string() },
   returns: previewValidator,
-  handler: async (_ctx, args) => {
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity()
+    if (!identity) {
+      throw new ConvexError('Not authenticated')
+    }
     return await fetchAndParse(args.url)
   },
 })
