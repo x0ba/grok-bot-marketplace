@@ -7,7 +7,11 @@ export default function HeaderUser() {
         <UserButton />
       </Show>
       <Show when="signed-out">
-        <SignInButton />
+        <SignInButton mode="modal">
+          <button type="button" className="clerk-sign-in">
+            Sign in
+          </button>
+        </SignInButton>
       </Show>
     </>
   )
