@@ -6,6 +6,21 @@ cd "$(dirname "$0")/../.."
 : "${CLERK_SECRET_KEY:?set CLERK_SECRET_KEY}"
 : "${VITE_CLERK_PUBLISHABLE_KEY:?set VITE_CLERK_PUBLISHABLE_KEY}"
 
+case "$VITE_CLERK_PUBLISHABLE_KEY" in
+  pk_test_*|pk_live_*) ;;
+  *)
+    echo "VITE_CLERK_PUBLISHABLE_KEY must start with pk_test_ or pk_live_" >&2
+    exit 2
+    ;;
+esac
+case "$CLERK_SECRET_KEY" in
+  sk_test_*|sk_live_*) ;;
+  *)
+    echo "CLERK_SECRET_KEY must start with sk_test_ or sk_live_" >&2
+    exit 2
+    ;;
+esac
+
 # Issuer is required for Convex JWT validation (auth.config.ts). Prefer an
 # explicit env override; otherwise reuse a value already present in .env.local.
 if [ -z "${CLERK_JWT_ISSUER_DOMAIN:-}" ] && [ -f .env.local ]; then

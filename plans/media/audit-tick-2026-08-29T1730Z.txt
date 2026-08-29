@@ -1,0 +1,17 @@
+audit tick @ 2026-08-29T17:30Z (marketplace-audit-30m delivery #33)
+playbook: origin/main lacks pstack/ — used plugin-cache autopilot-stack.md
+goal: HOLD review + Clerk + Graphite; do not merge; auth lanes when secrets land
+stack linear: foundation→submit→feed→mcp→polish YES
+heads: #2 24e3a47 #3 fa9adfe #4 c2ca02d #5 fbfb7fb #6 e668804→(vite recover + bootstrap key guard)
+side effects since 17:08 tick: OTP scrub + JWT issuer bootstrap; Macroscope threads resolved; accidental dummy Clerk keys broke Vite 500 — restored keyless .env.local, restarted vite-dev; bootstrap now rejects non pk_/sk_ keys
+unit: 25/25 PASS
+live non-auth: / 200, /submit 200, /?tag=demo 200, 404 200, empty-tag 200; MCP init OK; tools list_bots,search_bots,get_bot
+perf non-auth: home median 17.05ms; MCP init median 7.75ms (budget 300ms PASS)
+human APPROVED: 0 across #2–#6
+open review threads (non-outdated): 0
+merged program PRs: none
+Clerk secrets: ABSENT
+Graphite auth: ABSENT
+stuck owner lanes: none — review/Clerk/Graphite are operator gates
+operator setup actions: filed for Clerk secrets + review-from-#2
+timer: marketplace-audit-30m remains armed (deliveryCount 33)
