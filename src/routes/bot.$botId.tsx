@@ -123,10 +123,10 @@ function BotDetailPage() {
         </ul>
       ) : null}
       {bot.description ? (
-        <p className="bot-detail-description">{bot.description}</p>
+        <p className="bot-detail-copy">{bot.description}</p>
       ) : null}
       {bot.promptExcerpt ? (
-        <pre className="bot-detail-prompt">{bot.promptExcerpt}</pre>
+        <p className="bot-detail-copy bot-detail-excerpt">{bot.promptExcerpt}</p>
       ) : null}
       <p className="bot-detail-cta">
         <Button asChild>
