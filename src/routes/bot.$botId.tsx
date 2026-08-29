@@ -1,4 +1,5 @@
 import { useQuery } from 'convex/react'
+import { ConvexHttpClient } from 'convex/browser'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useEffect } from 'react'
 
@@ -6,23 +7,54 @@ import { api } from '../../convex/_generated/api'
 import { Badge } from '#/components/ui/badge'
 import { Button } from '#/components/ui/button'
 
+function resolveConvexUrl(): string {
+  const fromVite = import.meta.env.VITE_CONVEX_URL
+  if (typeof fromVite === 'string' && fromVite.length > 0) return fromVite
+  const fromProcess = process.env.VITE_CONVEX_URL
+  if (fromProcess) return fromProcess
+  throw new Error('VITE_CONVEX_URL is not configured')
+}
+
+const fallbackDescription =
+  'Shared Grok bot template on Grok Bot Marketplace'
+
 export const Route = createFileRoute('/bot/$botId')({
+  loader: async ({ params }) => {
+    const convex = new ConvexHttpClient(resolveConvexUrl())
+    const bot = await convex.query(api.feed.getByBotId, {
+      botId: params.botId,
+    })
+    return { bot }
+  },
+  head: ({ loaderData, params }) => {
+    const bot = loaderData?.bot
+    if (!bot) {
+      return {
+        meta: [
+          { title: 'Bot not found · Grok Bot Marketplace' },
+          { property: 'og:title', content: params.botId },
+          { property: 'og:description', content: fallbackDescription },
+        ],
+      }
+    }
+    return {
+      meta: [
+        { title: `${bot.name} · Grok Bot Marketplace` },
+        { property: 'og:title', content: bot.name },
+        {
+          property: 'og:description',
+          content: bot.description ?? fallbackDescription,
+        },
+      ],
+    }
+  },
   component: BotDetailPage,
-  head: ({ params }) => ({
-    meta: [
-      { title: `Bot · Grok Bot Marketplace` },
-      { property: 'og:title', content: params.botId },
-      {
-        property: 'og:description',
-        content: 'Shared Grok bot template on Grok Bot Marketplace',
-      },
-    ],
-  }),
 })
 
 function BotDetailPage() {
   const { botId } = Route.useParams()
-  const bot = useQuery(api.feed.getByBotId, { botId })
+  const { bot: loaded } = Route.useLoaderData()
+  const bot = useQuery(api.feed.getByBotId, { botId }) ?? loaded
 
   useEffect(() => {
     if (bot === undefined) return
@@ -31,24 +63,16 @@ function BotDetailPage() {
       const ogTitle = document.querySelector('meta[property="og:title"]')
       if (ogTitle) ogTitle.setAttribute('content', 'Bot not found')
       const ogDesc = document.querySelector('meta[property="og:description"]')
-      if (ogDesc) {
-        ogDesc.setAttribute(
-          'content',
-          'Shared Grok bot template on Grok Bot Marketplace',
-        )
-      }
+      if (ogDesc) ogDesc.setAttribute('content', fallbackDescription)
       return
     }
 
-    document.title = bot.name
+    document.title = `${bot.name} · Grok Bot Marketplace`
     const ogTitle = document.querySelector('meta[property="og:title"]')
     if (ogTitle) ogTitle.setAttribute('content', bot.name)
     const ogDesc = document.querySelector('meta[property="og:description"]')
     if (ogDesc) {
-      ogDesc.setAttribute(
-        'content',
-        bot.description ?? 'Shared Grok bot template on Grok Bot Marketplace',
-      )
+      ogDesc.setAttribute('content', bot.description ?? fallbackDescription)
     }
   }, [bot])
 
@@ -98,16 +122,18 @@ function BotDetailPage() {
         </ul>
       ) : null}
       {bot.description ? (
-        <p className="bot-detail-copy">{bot.description}</p>
+        <p className="bot-detail-description">{bot.description}</p>
       ) : null}
       {bot.promptExcerpt ? (
-        <p className="bot-detail-copy bot-detail-excerpt">{bot.promptExcerpt}</p>
+        <pre className="bot-detail-prompt">{bot.promptExcerpt}</pre>
       ) : null}
-      <Button asChild className="bot-detail-cta">
-        <a href={bot.url} target="_blank" rel="noreferrer">
-          Add to Grok Bot
-        </a>
-      </Button>
+      <p className="bot-detail-cta">
+        <Button asChild>
+          <a href={bot.url} target="_blank" rel="noreferrer">
+            Add to Grok Bot
+          </a>
+        </Button>
+      </p>
     </main>
   )
 }

@@ -6,7 +6,8 @@ SHA="${1:?pass the STACK-READY head SHA}"
 cd "$(dirname "$0")/../.."
 echo "=== swarm-ready @ $SHA ==="
 git rev-parse --verify "$SHA^{commit}" >/dev/null
-echo "commit ok"
+git checkout --detach "$SHA"
+echo "checked out $SHA"
 test -n "${CLERK_SECRET_KEY:-}" || { echo "BLOCKED: CLERK_SECRET_KEY"; exit 2; }
 test -n "${GRAPHITE_AUTH_TOKEN:-}" -o -f "$HOME/.config/graphite/user_config.json" || {
   echo "BLOCKED: Graphite auth"
@@ -14,4 +15,4 @@ test -n "${GRAPHITE_AUTH_TOKEN:-}" -o -f "$HOME/.config/graphite/user_config.jso
 }
 npm test -- --run
 npx tsc --noEmit
-echo "unit+typecheck PASS — run live auth lanes + perf next, then gt submit --stack"
+echo "unit+typecheck PASS at $SHA — run live auth lanes + perf next, then gt submit --stack"
