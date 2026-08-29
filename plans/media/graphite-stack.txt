@@ -1,6 +1,6 @@
 Graphite local stack @ 2026-08-29T08:10Z
 
-cursor/polish-a3ed     (tip after media)  PR #6  base mcp
+cursor/polish-a3ed     a18d49b  PR #6  base mcp
 cursor/mcp-a3ed        a55efb9            PR #5  base feed  — Streamable HTTP
 cursor/feed-a3ed       4dbb5c8            PR #4  base submit
 cursor/submit-a3ed     fa9adfe            PR #3  base foundation
