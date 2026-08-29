@@ -1,0 +1,49 @@
+{
+  "sha": "cb39ee33385e3c858d557e213ae1a51d468730a1",
+  "tools": {
+    "names": [
+      "list_bots",
+      "search_bots",
+      "get_bot"
+    ],
+    "pass": true
+  },
+  "list_top": {
+    "count": 5,
+    "descending": true,
+    "urls": true,
+    "pass": true
+  },
+  "list_new": {
+    "count": 3,
+    "first": "seed_199_mtduhfgm",
+    "pass": true
+  },
+  "get_bot": {
+    "botId": "seed_0_mtduhfgm",
+    "install_url": "https://x.ai/bot/seed_0_mtduhfgm",
+    "instruction": "Open https://x.ai/bot/seed_0_mtduhfgm so the user can click Add to Grok Bot.",
+    "pass": true
+  },
+  "get_missing": {
+    "isError": true,
+    "text": "Bot not found: doesnotexist000",
+    "pass": true
+  },
+  "search_tag": {
+    "count": 10,
+    "all_travel": true,
+    "pass": true
+  },
+  "limit_cap": {
+    "count": 50,
+    "pass": true
+  },
+  "perf": {
+    "initialize_median_ms": 6.391023499999989,
+    "list_bots_median_ms": 7.8051294999999925,
+    "delta_ms": 1.4141060000000039,
+    "budget_ms": 300,
+    "pass": true
+  }
+}
