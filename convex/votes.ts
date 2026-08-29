@@ -53,8 +53,9 @@ export const myVoteBotIds = query({
       .unique()
     if (!user) return []
 
-    // Cap to avoid oversized args; clients should pass the visible window.
-    const wanted = args.botIds.slice(0, 200)
+    // Cap below Convex's ~4096 index-range-per-transaction limit. Clients
+    // pass every rendered card id so vote indicators stay accurate after load-more.
+    const wanted = args.botIds.slice(0, 1000)
     const voted: Array<Id<'bots'>> = []
     for (const botId of wanted) {
       const vote = await ctx.db
