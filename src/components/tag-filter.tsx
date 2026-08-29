@@ -1,4 +1,3 @@
-import { Link } from '@tanstack/react-router'
 import { Badge } from '#/components/ui/badge'
 
 export function TagFilter({
@@ -15,9 +14,6 @@ export function TagFilter({
       <button type="button" className="tag-clear" onClick={onClear}>
         Clear
       </button>
-      <Link to="/" search={{}} className="sr-only">
-        Clear filter
-      </Link>
     </div>
   )
 }

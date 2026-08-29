@@ -36,7 +36,11 @@ export const Route = createFileRoute('/')({
 })
 
 function FeedPage() {
-  const { tag } = Route.useSearch()
+  const { tag: rawTag } = Route.useSearch()
+  const tag = useMemo(() => {
+    const trimmed = rawTag?.trim().toLowerCase().slice(0, 24)
+    return trimmed || undefined
+  }, [rawTag])
   const navigate = useNavigate({ from: Route.fullPath })
   const [sort, setSort] = useState<'top' | 'new'>('top')
   const { isSignedIn } = useAuth()
@@ -46,10 +50,7 @@ function FeedPage() {
     () => new Set<Id<'bots'>>(),
   )
 
-  const listArgs = useMemo(
-    () => ({ tag: tag?.toLowerCase().trim() || undefined }),
-    [tag],
-  )
+  const listArgs = useMemo(() => ({ tag }), [tag])
   const top = usePaginatedQuery(
     api.feed.listTop,
     sort === 'top' ? listArgs : 'skip',
