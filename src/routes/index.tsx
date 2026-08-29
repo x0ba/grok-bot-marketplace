@@ -36,11 +36,7 @@ export const Route = createFileRoute('/')({
 })
 
 function FeedPage() {
-  const { tag: rawTag } = Route.useSearch()
-  const tag = useMemo(() => {
-    const trimmed = rawTag?.trim().toLowerCase().slice(0, 24)
-    return trimmed || undefined
-  }, [rawTag])
+  const { tag } = Route.useSearch()
   const navigate = useNavigate({ from: Route.fullPath })
   const [sort, setSort] = useState<'top' | 'new'>('top')
   const { isSignedIn } = useAuth()
@@ -50,7 +46,10 @@ function FeedPage() {
     () => new Set<Id<'bots'>>(),
   )
 
-  const listArgs = useMemo(() => ({ tag }), [tag])
+  const listArgs = useMemo(
+    () => ({ tag: tag?.toLowerCase().trim() || undefined }),
+    [tag],
+  )
   const top = usePaginatedQuery(
     api.feed.listTop,
     sort === 'top' ? listArgs : 'skip',
@@ -101,15 +100,14 @@ function FeedPage() {
     })
   }
 
-  const filteringEmpty =
-    !!tag &&
-    active.results.length === 0 &&
-    (active.status === 'CanLoadMore' || active.status === 'LoadingMore')
-
-  const showSkeleton =
-    active.status === 'LoadingFirstPage' || filteringEmpty
-
   const showEmpty =
+    active.results.length === 0 &&
+    (active.status === 'Exhausted' || active.status === 'CanLoadMore') ===
+      false &&
+    active.status !== 'LoadingFirstPage' &&
+    active.status !== 'LoadingMore'
+
+  const trulyEmpty =
     active.results.length === 0 &&
     active.status === 'Exhausted'
 
@@ -135,13 +133,19 @@ function FeedPage() {
           <TabsTrigger value="new">New</TabsTrigger>
         </TabsList>
         <TabsContent value={sort} className="feed-list">
-          {showSkeleton ? (
+          {active.status === 'LoadingFirstPage' ||
+          (tag &&
+            active.results.length === 0 &&
+            active.status === 'CanLoadMore') ||
+          (tag &&
+            active.results.length === 0 &&
+            active.status === 'LoadingMore') ? (
             <div className="bot-list" aria-busy="true">
               {Array.from({ length: 4 }).map((_, i) => (
                 <Skeleton key={i} className="feed-skeleton" />
               ))}
             </div>
-          ) : showEmpty ? (
+          ) : trulyEmpty || showEmpty ? (
             <p className="catalog-empty-copy">
               {tag ? `No bots tagged ${tag}` : 'No bots yet'}
             </p>
