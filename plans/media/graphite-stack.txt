@@ -1,6 +1,6 @@
-Graphite local stack @ 2026-08-29T1948Z
+Graphite local stack @ 2026-08-29T2006Z
 
-cursor/polish-a3ed     a2e3ef7  PR #6  base mcp
+cursor/polish-a3ed     2b96fab  PR #6  base mcp
 cursor/mcp-a3ed        fbfb7fb  PR #5  base feed
 cursor/feed-a3ed       c2ca02d  PR #4  base submit
 cursor/submit-a3ed     fa9adfe  PR #3  base foundation
