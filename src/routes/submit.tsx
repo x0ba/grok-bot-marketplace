@@ -65,7 +65,7 @@ function SubmitForm() {
   const [description, setDescription] = useState('')
   const [previewPending, startPreview] = useTransition()
   const [publishPending, startPublish] = useTransition()
-  const [previewRequestId, setPreviewRequestId] = useState(0)
+  const previewRequestId = useRef(0)
 
   function onUrlBlur() {
     const valid = validateBotUrl(url)
@@ -80,30 +80,21 @@ function SubmitForm() {
     }
     setUrlError(null)
     setDuplicateBotId(null)
-    const requestId = previewRequestId + 1
-    setPreviewRequestId(requestId)
+    const requestId = ++previewRequestId.current
     startPreview(async () => {
       try {
         const result = await fetchPreview({ url: valid.url })
-        setPreviewRequestId((current) => {
-          if (current === requestId) {
-            setPreview(result)
-            setUrl(valid.url)
-          }
-          return current
-        })
+        if (previewRequestId.current !== requestId) return
+        setPreview(result)
+        setUrl(valid.url)
       } catch (error) {
-        setPreviewRequestId((current) => {
-          if (current === requestId) {
-            setPreview(null)
-            setUrlError(
-              error instanceof Error
-                ? error.message
-                : 'The bot page could not be read.',
-            )
-          }
-          return current
-        })
+        if (previewRequestId.current !== requestId) return
+        setPreview(null)
+        setUrlError(
+          error instanceof Error
+            ? error.message
+            : 'The bot page could not be read.',
+        )
       }
     })
   }
@@ -179,7 +170,7 @@ function SubmitForm() {
                 setUrlError(null)
                 setDuplicateBotId(null)
                 setPreview(null)
-                setPreviewRequestId((id) => id + 1)
+                previewRequestId.current += 1
               }}
               onBlur={onUrlBlur}
               onKeyDown={(e) => {
