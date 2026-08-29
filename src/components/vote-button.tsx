@@ -6,12 +6,14 @@ export function VoteButton({
   onVote,
   signedIn,
   onRequireSignIn,
+  disabled = false,
 }: {
   score: number
   voted: boolean
   onVote: () => void
   signedIn: boolean
   onRequireSignIn: () => void
+  disabled?: boolean
 }) {
   const { isSignedIn } = useAuth()
   const canVote = signedIn && isSignedIn
@@ -39,7 +41,9 @@ export function VoteButton({
       type="button"
       className={voted ? 'vote-btn is-voted' : 'vote-btn'}
       aria-pressed={voted}
+      aria-busy={disabled}
       aria-label={voted ? `Remove upvote, ${score} votes` : `Upvote, ${score} votes`}
+      disabled={disabled}
       onClick={onVote}
     >
       <span className="vote-arrow" aria-hidden>

@@ -1,10 +1,11 @@
 import { useAuth } from '@clerk/tanstack-react-start'
 import { usePaginatedQuery, useQuery, useMutation } from 'convex/react'
 import { createFileRoute } from '@tanstack/react-router'
-import { useMemo, useState, useTransition } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { toast } from 'sonner'
 
 import { api } from '../../convex/_generated/api'
+import type { Id } from '../../convex/_generated/dataModel'
 import { BotCard } from '#/components/bot-card'
 import { Button } from '#/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '#/components/ui/tabs'
@@ -20,7 +21,10 @@ function FeedPage() {
   const [sort, setSort] = useState<'top' | 'new'>('top')
   const { isSignedIn } = useAuth()
   const toggleUpvote = useMutation(api.votes.toggleUpvote)
-  const [votePending, startVote] = useTransition()
+  const pendingRef = useRef(new Set<Id<'bots'>>())
+  const [pendingVotes, setPendingVotes] = useState(
+    () => new Set<Id<'bots'>>(),
+  )
 
   const listArgs = useMemo(() => ({}), [])
   const top = usePaginatedQuery(
@@ -41,6 +45,20 @@ function FeedPage() {
     isSignedIn && botIds.length > 0 ? { botIds } : 'skip',
   )
   const votedSet = useMemo(() => new Set(votedIds ?? []), [votedIds])
+
+  async function handleVote(botId: Id<'bots'>) {
+    if (pendingRef.current.has(botId)) return
+    pendingRef.current.add(botId)
+    setPendingVotes(new Set(pendingRef.current))
+    try {
+      await toggleUpvote({ botId })
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Vote failed')
+    } finally {
+      pendingRef.current.delete(botId)
+      setPendingVotes(new Set(pendingRef.current))
+    }
+  }
 
   return (
     <main className="page-wrap feed-page">
@@ -71,19 +89,9 @@ function FeedPage() {
                     voted={votedSet.has(bot._id)}
                     signedIn={!!isSignedIn}
                     onRequireSignIn={() => undefined}
+                    voteDisabled={pendingVotes.has(bot._id)}
                     onVote={() => {
-                      if (votePending) return
-                      startVote(async () => {
-                        try {
-                          await toggleUpvote({ botId: bot._id })
-                        } catch (error) {
-                          toast.error(
-                            error instanceof Error
-                              ? error.message
-                              : 'Vote failed',
-                          )
-                        }
-                      })
+                      void handleVote(bot._id)
                     }}
                   />
                 </li>

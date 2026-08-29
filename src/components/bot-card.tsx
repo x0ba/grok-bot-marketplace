@@ -9,12 +9,14 @@ export function BotCard({
   onVote,
   signedIn,
   onRequireSignIn,
+  voteDisabled = false,
 }: {
   bot: Doc<'bots'>
   voted: boolean
   onVote: () => void
   signedIn: boolean
   onRequireSignIn: () => void
+  voteDisabled?: boolean
 }) {
   return (
     <article className="bot-row">
@@ -24,6 +26,7 @@ export function BotCard({
         onVote={onVote}
         signedIn={signedIn}
         onRequireSignIn={onRequireSignIn}
+        disabled={voteDisabled}
       />
       <div className="bot-row-body">
         <Link
