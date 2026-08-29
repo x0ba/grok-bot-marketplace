@@ -1,6 +1,6 @@
 import { useQuery } from 'convex/react'
 import { ConvexHttpClient } from 'convex/browser'
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { createFileRoute, Link, notFound } from '@tanstack/react-router'
 import { useEffect } from 'react'
 
 import { api } from '../../convex/_generated/api'
@@ -18,12 +18,28 @@ function resolveConvexUrl(): string {
 const fallbackDescription =
   'Shared Grok bot template on Grok Bot Marketplace'
 
+function BotNotFound() {
+  const { botId } = Route.useParams()
+  return (
+    <main className="page-wrap catalog-empty bot-404">
+      <p className="catalog-empty-copy">Bot not found</p>
+      <p className="submit-lede">
+        No listing matches <code>{botId}</code>.
+      </p>
+      <Link to="/" className="nav-text">
+        Back to catalog
+      </Link>
+    </main>
+  )
+}
+
 export const Route = createFileRoute('/bot/$botId')({
   loader: async ({ params }) => {
     const convex = new ConvexHttpClient(resolveConvexUrl())
     const bot = await convex.query(api.feed.getByBotId, {
       botId: params.botId,
     })
+    if (!bot) throw notFound()
     return { bot }
   },
   head: ({ loaderData, params }) => {
@@ -48,6 +64,7 @@ export const Route = createFileRoute('/bot/$botId')({
       ],
     }
   },
+  notFoundComponent: BotNotFound,
   component: BotDetailPage,
 })
 
