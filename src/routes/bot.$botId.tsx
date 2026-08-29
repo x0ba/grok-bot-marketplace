@@ -54,7 +54,8 @@ export const Route = createFileRoute('/bot/$botId')({
 function BotDetailPage() {
   const { botId } = Route.useParams()
   const { bot: loaded } = Route.useLoaderData()
-  const bot = useQuery(api.feed.getByBotId, { botId }) ?? loaded
+  const queried = useQuery(api.feed.getByBotId, { botId })
+  const bot = queried === undefined ? loaded : queried
 
   useEffect(() => {
     if (bot === undefined) return
