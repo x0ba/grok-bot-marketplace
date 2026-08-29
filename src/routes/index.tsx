@@ -100,14 +100,15 @@ function FeedPage() {
     })
   }
 
-  const showEmpty =
+  const filteringEmpty =
+    !!tag &&
     active.results.length === 0 &&
-    (active.status === 'Exhausted' || active.status === 'CanLoadMore') ===
-      false &&
-    active.status !== 'LoadingFirstPage' &&
-    active.status !== 'LoadingMore'
+    (active.status === 'CanLoadMore' || active.status === 'LoadingMore')
 
-  const trulyEmpty =
+  const showSkeleton =
+    active.status === 'LoadingFirstPage' || filteringEmpty
+
+  const showEmpty =
     active.results.length === 0 &&
     active.status === 'Exhausted'
 
@@ -133,19 +134,13 @@ function FeedPage() {
           <TabsTrigger value="new">New</TabsTrigger>
         </TabsList>
         <TabsContent value={sort} className="feed-list">
-          {active.status === 'LoadingFirstPage' ||
-          (tag &&
-            active.results.length === 0 &&
-            active.status === 'CanLoadMore') ||
-          (tag &&
-            active.results.length === 0 &&
-            active.status === 'LoadingMore') ? (
+          {showSkeleton ? (
             <div className="bot-list" aria-busy="true">
               {Array.from({ length: 4 }).map((_, i) => (
                 <Skeleton key={i} className="feed-skeleton" />
               ))}
             </div>
-          ) : trulyEmpty || showEmpty ? (
+          ) : showEmpty ? (
             <p className="catalog-empty-copy">
               {tag ? `No bots tagged ${tag}` : 'No bots yet'}
             </p>

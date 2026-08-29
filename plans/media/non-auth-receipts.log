@@ -1,0 +1,56 @@
+SHA=aa785786c0cd6cbeebc8795be526be50b08c4134
+BRANCH=cursor/polish-a3ed
+=== UNIT ===
+
+······················
+
+ Test Files  5 passed (5)
+      Tests  22 passed (22)
+   Start at  03:32:46
+   Duration  427ms (transform 308ms, setup 0ms, import 394ms, tests 85ms, environment 177ms)
+
+=== FOUNDATION/FEED/POLISH: home HTTP ===
+home_1:200 t=0.019517
+home_2:200 t=0.014782
+home_3:200 t=0.014469
+home_4:200 t=0.015231
+home_5:200 t=0.015151
+=== SUBMIT gated (signed out) ===
+submit:200
+=== FEED listTop/listNew ===
+{
+  "continueCursor": "076e07721528450717fa489b95c93d359de48539a335f94577f62f91629d43d780a0d255cdc978964ab37f7c5255f1bc3bc17676ee3d70e6a11886f3f422669d862b48cc88f07bd49d6554dd7dbb5293e34c03fef1b3453699f88e64732756de7ddb6b781244d1a8ce8b2ca1d895f75c077409d87b87055ffbcdbaa3",
+  "isDone": false,
+  "page
+{
+  "continueCursor": "073eab7db1c1b860b288d39f698315cdccbe27a48127454d7d275943805753f4cee8bc839b3bac1123d7814a40281fc10c20a48d42492d41a6a950efe99986f47dfa689536d54d9938bc22aeb8b0981162bc842fae4774dcf
+{
+  "continueCursor": "076e07721528450717fa489b95c93d359de48539a335f94577f62f91629d43d780a0d255cdc978964ab37f7c5255f1bc3bc17676ee3d70e6a11886f3f422669d862b48cc88f07bd49d6554dd7dbb5293e34c03fef1b3453699f88e64732756de7ddb6b781244d1a8ce8b2ca1d895f75c077409d87b87055ffbcdbaa3",
+  "isDone": false,
+  "page
+=== DETAIL / 404 ===
+botId=seed_0_mtdqa9hs
+detail:200
+404page:200
+=== MCP tools ===
+-- tools/list --
+list_bots,search_bots,get_bot
+-- list_bots top --
+{"result":{"content":[{"type":"text","text":"[\n  {\n    \"name\": \"Seed bot 0\",\n    \"creator\": \"Seeder\",\n    \"description\": \"Seeded listing 0\",\n    \"tags\": [\n      \"travel\"\n    ],\n    \"score\": 5,\n    \"install_url\": \"https:/
+-- get missing --
+{"result":{"content":[{"type":"text","text":"Bot not found: nope_missing"}],"isError":true},"jsonrpc":"2.0","id":3}
+-- limit cap --
+count 10
+=== PERF MCP list_bots vs initialize ===
+200
+init med: 0.018217
+list_bots med: 0.0169965
+=== PERF home cold (curl TTFB proxy for load) ===
+home med: 0.011895
+=== AUTH-GATED (blocked) ===
+fetchBotPreview requires auth; submit publish/vote lanes blocked without CLERK_SECRET_KEY
+✖ Failed to run function "bots:fetchBotPreview":
+ConvexError: [Request ID: 6e92714a8946a94d] Server Error
+Uncaught ConvexError: Not authenticated
+    at handler (../convex/bots.ts:65:11)
+mcp limit cap after seed: 50 (PASS)
