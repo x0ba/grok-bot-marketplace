@@ -1,6 +1,6 @@
 {
   "recorded_at": "2026-08-29T03:56:19.702Z",
-  "tip_sha": "cb39ee33385e3c858d557e213ae1a51d468730a1",
+  "tip_sha": "1007d3d18566a0a31fb6361ec7ac12b6e79e6cf1",
   "foundation_perf": {
     "metric": "home loadEventEnd ms",
     "trunk_main_median": 57.80000000074506,
@@ -44,7 +44,31 @@
   "submit_preview_perf": {
     "curl_baseline_median_s": 0.145089,
     "preview_median": null,
-    "note": "preview action requires Clerk auth — blocked until CLERK_SECRET_KEY",
+    "note": "preview action requires Clerk auth \u2014 blocked until CLERK_SECRET_KEY",
     "pass": null
+  },
+  "verified_at": "2026-08-29T09:30Z",
+  "non_auth": {
+    "unit": "25/25",
+    "tsc": "pass",
+    "live": {
+      "home": 200,
+      "submit": 200,
+      "tag": 200,
+      "404": 200,
+      "ssr_title": "Seed bot 0 \u00b7 Grok Bot Marketplace",
+      "mcp_tools": [
+        "list_bots",
+        "search_bots",
+        "get_bot"
+      ]
+    },
+    "perf": {
+      "home_curl_med_s": 0.011482,
+      "mcp_init_med_s": 0.009424,
+      "mcp_list_bots_med_s": 0.011967,
+      "mcp_delta_ms": 2.54,
+      "note": "list_bots within 300ms of initialize (plan budget). Auth preview/vote perf deferred."
+    }
   }
 }
