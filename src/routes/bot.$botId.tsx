@@ -1,5 +1,6 @@
 import { useQuery } from 'convex/react'
 import { createFileRoute, Link } from '@tanstack/react-router'
+import { useEffect } from 'react'
 
 import { api } from '../../convex/_generated/api'
 import { Badge } from '#/components/ui/badge'
@@ -7,11 +8,33 @@ import { Button } from '#/components/ui/button'
 
 export const Route = createFileRoute('/bot/$botId')({
   component: BotDetailPage,
+  head: ({ params }) => ({
+    meta: [
+      { title: `Bot · Grok Bot Marketplace` },
+      { property: 'og:title', content: params.botId },
+      {
+        property: 'og:description',
+        content: 'Shared Grok bot template on Grok Bot Marketplace',
+      },
+    ],
+  }),
 })
 
 function BotDetailPage() {
   const { botId } = Route.useParams()
   const bot = useQuery(api.feed.getByBotId, { botId })
+
+  useEffect(() => {
+    if (bot?.name) {
+      document.title = bot.name
+      const ogTitle = document.querySelector('meta[property="og:title"]')
+      if (ogTitle) ogTitle.setAttribute('content', bot.name)
+      if (bot.description) {
+        const ogDesc = document.querySelector('meta[property="og:description"]')
+        if (ogDesc) ogDesc.setAttribute('content', bot.description)
+      }
+    }
+  }, [bot])
 
   if (bot === undefined) {
     return (
@@ -23,8 +46,11 @@ function BotDetailPage() {
 
   if (bot === null) {
     return (
-      <main className="page-wrap catalog-empty">
+      <main className="page-wrap catalog-empty bot-404">
         <p className="catalog-empty-copy">Bot not found</p>
+        <p className="submit-lede">
+          No listing matches <code>{botId}</code>.
+        </p>
         <Link to="/" className="nav-text">
           Back to catalog
         </Link>
@@ -48,7 +74,9 @@ function BotDetailPage() {
         <ul className="bot-row-tags">
           {bot.tags.map((tag) => (
             <li key={tag}>
-              <Badge variant="secondary">{tag}</Badge>
+              <Link to="/" search={{ tag }} className="tag-chip">
+                <Badge variant="secondary">{tag}</Badge>
+              </Link>
             </li>
           ))}
         </ul>

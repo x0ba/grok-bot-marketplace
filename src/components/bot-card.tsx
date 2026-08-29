@@ -9,6 +9,7 @@ export function BotCard({
   onVote,
   signedIn,
   onRequireSignIn,
+  onTagClick,
   voteDisabled = false,
 }: {
   bot: Doc<'bots'>
@@ -16,6 +17,7 @@ export function BotCard({
   onVote: () => void
   signedIn: boolean
   onRequireSignIn: () => void
+  onTagClick?: (tag: string) => void
   voteDisabled?: boolean
 }) {
   return (
@@ -43,7 +45,13 @@ export function BotCard({
           <ul className="bot-row-tags">
             {bot.tags.map((tag) => (
               <li key={tag}>
-                <Badge variant="secondary">{tag}</Badge>
+                <button
+                  type="button"
+                  className="tag-chip"
+                  onClick={() => onTagClick?.(tag)}
+                >
+                  <Badge variant="secondary">{tag}</Badge>
+                </button>
               </li>
             ))}
           </ul>
