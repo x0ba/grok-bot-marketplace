@@ -2,7 +2,7 @@ audit tick @ 2026-08-29T2113Z (marketplace-audit-30m window + goal continuation)
 playbook: origin/main lacks pstack/ — used plugin-cache autopilot-stack.md
 goal: HOLD review + Clerk + Graphite; do not merge; auth lanes when secrets land
 stack linear: foundation→submit→feed→mcp→polish YES
-heads: #2 24e3a47 #3 fa9adfe #4 c2ca02d #5 fbfb7fb #6 8c6b3f3
+heads: #2 24e3a47 #3 fa9adfe #4 c2ca02d #5 fbfb7fb #6 f71e2df
 side effects since 20:43 tick:
   - Convex local backend was down (SSR fetch failed → /bot/* 500); restarted CONVEX_AGENT_MODE=anonymous on :3210
   - fix(polish): throw notFound() for missing bot → HTTP 404 + styled bot-404; defaultNotFoundComponent on router
