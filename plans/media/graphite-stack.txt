@@ -1,9 +1,9 @@
-graphite stack @ 2026-08-29T2140Z
+graphite stack @ 2026-08-29T2208Z
 linear (local gt): polish → mcp → feed → submit → foundation → main
 #2 foundation 24e3a47 base main
 #3 submit      fa9adfe base foundation
 #4 feed        c2ca02d base submit
 #5 mcp         fbfb7fb base feed
-#6 polish      34f8223 base mcp
+#6 polish      324a4a5 base mcp
 gt submit: BLOCKED (no Graphite auth token)
 swarm-verify/append: HOLD until reviews + Clerk secrets + Graphite auth
