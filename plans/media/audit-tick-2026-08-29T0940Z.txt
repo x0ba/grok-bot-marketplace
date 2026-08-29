@@ -1,0 +1,15 @@
+audit tick @ 2026-08-29T09:40Z
+playbook: plugin cache (origin/main has no pstack/ playbook path)
+goal: HOLD review + Clerk + Graphite; do not merge; auth lanes when secrets land
+stack linear: foundation→submit→feed→mcp→polish YES
+heads: #2 24e3a47 #3 fa9adfe #4 111a1a7 #5 2604c21 #6 e33cfc4
+unit: 25/25 PASS at tip
+live non-auth: home/submit/404/tag/bot-detail 200; MCP initialize OK
+perf non-auth: home median 12.03ms; MCP init median 6.67ms (budget 300ms)
+shipped this tick: none (prior Macroscope CSS+bootstrap fixes already on tip; no new findings)
+human APPROVED reviews: 0 across #2–#6
+merged program PRs: none
+Clerk secrets: missing (only CLERK_JWT_ISSUER_DOMAIN + Convex URLs)
+Graphite auth: missing (gt auth --token)
+stuck lanes: none (gates are operator, not idle owners)
+timer: marketplace-audit-30m armed
