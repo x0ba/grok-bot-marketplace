@@ -72,8 +72,7 @@ function FeedPage() {
                     signedIn={!!isSignedIn}
                     onRequireSignIn={() => undefined}
                     onVote={() => {
-                      if (votePending && pendingBotId === bot._id) return
-                      setPendingBotId(bot._id)
+                      if (votePending) return
                       startVote(async () => {
                         try {
                           await toggleUpvote({ botId: bot._id })
@@ -83,8 +82,6 @@ function FeedPage() {
                               ? error.message
                               : 'Vote failed',
                           )
-                        } finally {
-                          setPendingBotId(null)
                         }
                       })
                     }}
