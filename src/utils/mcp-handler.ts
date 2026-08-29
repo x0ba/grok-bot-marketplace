@@ -5,6 +5,17 @@ import type { JSONRPCMessage } from '@modelcontextprotocol/sdk/types.js'
 
 const MCP_RESPONSE_TIMEOUT_MS = 30_000
 
+function isJsonRpcNotification(
+  message: JSONRPCMessage,
+): message is JSONRPCMessage & { method: string; id?: undefined } {
+  return (
+    typeof message === 'object' &&
+    message !== null &&
+    'method' in message &&
+    !('id' in message)
+  )
+}
+
 export async function handleMcpRequest(
   request: Request,
   server: McpServer,
@@ -14,6 +25,17 @@ export async function handleMcpRequest(
 
     const [clientTransport, serverTransport] =
       InMemoryTransport.createLinkedPair()
+
+    await server.connect(serverTransport)
+    await clientTransport.start()
+    await serverTransport.start()
+
+    if (isJsonRpcNotification(jsonRpcRequest)) {
+      await clientTransport.send(jsonRpcRequest)
+      await clientTransport.close()
+      await serverTransport.close()
+      return new Response(null, { status: 204 })
+    }
 
     const responseData = await new Promise<JSONRPCMessage>((resolve, reject) => {
       const timer = setTimeout(() => {
@@ -25,17 +47,10 @@ export async function handleMcpRequest(
         resolve(message)
       }
 
-      void (async () => {
-        try {
-          await server.connect(serverTransport)
-          await clientTransport.start()
-          await serverTransport.start()
-          await clientTransport.send(jsonRpcRequest)
-        } catch (error) {
-          clearTimeout(timer)
-          reject(error)
-        }
-      })()
+      void clientTransport.send(jsonRpcRequest).catch((error) => {
+        clearTimeout(timer)
+        reject(error)
+      })
     })
 
     await clientTransport.close()

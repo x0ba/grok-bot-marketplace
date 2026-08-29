@@ -12,6 +12,8 @@ import {
 } from '#/mcp/catalog'
 
 function resolveConvexUrl(): string {
+  const fromVite = import.meta.env.VITE_CONVEX_URL
+  if (typeof fromVite === 'string' && fromVite.length > 0) return fromVite
   const fromProcess = process.env.VITE_CONVEX_URL
   if (fromProcess) return fromProcess
   throw new Error('VITE_CONVEX_URL is not configured')
