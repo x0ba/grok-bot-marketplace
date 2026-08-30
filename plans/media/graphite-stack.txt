@@ -4,6 +4,6 @@ linear (local gt): polish → mcp → feed → submit → foundation → main
 #3 submit      fa9adfe base foundation
 #4 feed        c2ca02d base submit
 #5 mcp         fbfb7fb base feed
-#6 polish      (audit content commit; point follows) base mcp
+#6 polish      b3e7e5c base mcp
 gt submit: BLOCKED (no Graphite auth token)
 swarm-verify/append: HOLD until reviews + Clerk secrets + Graphite auth
