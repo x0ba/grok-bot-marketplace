@@ -1,0 +1,51 @@
+{
+  "home": {
+    "status": 200,
+    "median_ms": 13.33,
+    "times": [
+      36.21,
+      14.67,
+      13.29,
+      13.33,
+      11.93
+    ]
+  },
+  "submit": {
+    "status": 200,
+    "median_ms": 11.39,
+    "times": [
+      11.39
+    ]
+  },
+  "tag": {
+    "status": 200,
+    "median_ms": 22.91,
+    "times": [
+      22.91
+    ]
+  },
+  "404": {
+    "status": 200,
+    "median_ms": 12.79,
+    "times": [
+      12.79
+    ]
+  },
+  "empty": {
+    "status": 200,
+    "median_ms": 22.86,
+    "times": [
+      22.86
+    ]
+  },
+  "mcp": {
+    "init_ok": true,
+    "init_median_ms": 6.06,
+    "tools": [
+      "list_bots",
+      "search_bots",
+      "get_bot"
+    ],
+    "budget_pass": true
+  }
+}

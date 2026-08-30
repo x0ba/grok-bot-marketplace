@@ -1,0 +1,15 @@
+audit tick @ 2026-08-29T11:14Z (marketplace-audit-30m timer delivery)
+playbook: origin/main lacks pstack/ — used plugin-cache autopilot-stack.md
+goal: HOLD review + Clerk + Graphite; do not merge; auth lanes when secrets land
+stack linear: foundation→submit→feed→mcp→polish YES
+heads: #2 24e3a47 #3 fa9adfe #4 111a1a7 #5 2604c21 #6 0d27fd2
+side effects since prior tick: audit-receipt commit 0d27fd2 only; no code deltas
+unit: 25/25 PASS @ 0d27fd2
+live non-auth: / 200, /submit 200, /?tag=demo 200, 404 OK; MCP init 200
+perf non-auth: home median 10.64ms; MCP init median 6.42ms (budget 300ms)
+human APPROVED: 0 across #2–#6
+merged program PRs: none
+Clerk secrets: ABSENT
+Graphite auth: ABSENT
+stuck owner lanes: none — review/Clerk/Graphite are operator gates
+timer: marketplace-audit-30m remains armed

@@ -1,0 +1,11 @@
+polish non-auth live lanes @ 2026-08-29T15:34Z tip f1e52f1
+1 tag-filter: PASS (polish-review-tag-filter.webp + tag-filter-active)
+2 tag-clear: PASS (polish-review-tag-clear.webp)
+3 skeleton: deferred (needs CDP throttle; prior live receipts cover loading UX)
+4 tag-empty: PASS (polish-review-tag-empty.webp — "No bots tagged zzznomatch999")
+5 404: PASS (polish-review-404.webp)
+6 titles: PASS (polish-review-titles.webp + polish-og-title-receipt.json)
+7 mobile: PASS (polish-review-mobile-tag.webp @ 390px, no h-scroll)
+8 keyboard vote: BLOCKED (needs Clerk)
+9 error toast: BLOCKED (needs Clerk + stopped Convex)
+10 og-meta: PASS (polish-og-title-receipt.json — og:title Seed bot 0, og:description Seeded listing 0)

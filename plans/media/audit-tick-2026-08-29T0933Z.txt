@@ -1,0 +1,15 @@
+HEAD=69a223105c31f6bd6eae586af71b8107615f638d
+audit tick @ 2026-08-29T09:33Z
+playbook: plugin cache (origin/main has no pstack/ playbook path)
+goal: HOLD review + Clerk + Graphite; do not merge; auth lanes when secrets land
+stack linear: foundation→submit→feed→mcp→polish YES
+heads: #2 24e3a47 #3 fa9adfe #4 111a1a7 #5 2604c21 #6 69a2231
+unit: 25/25 PASS at tip
+live non-auth: home/tag/404/bot-detail CSS classes OK; MCP initialize OK
+shipped this tick: restore bot-detail-copy/excerpt; auth-bootstrap umask 077 + awk ENVIRON upsert
+human reviews APPROVED: 0 across #2–#6
+merged program PRs: none
+Clerk secrets: missing
+Graphite auth: missing (gt auth --token)
+stuck lanes: none (gates are operator)
+timer: marketplace-audit-30m armed

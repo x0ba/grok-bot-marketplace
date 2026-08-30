@@ -1,0 +1,16 @@
+audit tick @ 2026-08-29T17:08Z (marketplace-audit-30m delivery #32)
+playbook: origin/main lacks pstack/ — used plugin-cache autopilot-stack.md
+goal: HOLD review + Clerk + Graphite; do not merge; auth lanes when secrets land
+stack linear: foundation→submit→feed→mcp→polish YES
+heads: #2 24e3a47 #3 fa9adfe #4 c2ca02d #5 fbfb7fb #6 ca414b0→(scrub fix)
+side effects since 16:34 tick: keyless probe ca414b0; Macroscope critical on OTP in media receipt — scrubbed probe + bootstrap echo
+unit: 25/25 PASS @ ca414b0
+live non-auth: / 200, /submit 200, /?tag=demo 200, 404 200, empty-tag 200; MCP init OK; tools list_bots,search_bots,get_bot
+perf non-auth: home median 12.4ms; MCP init median 5.7ms (budget 300ms PASS)
+human APPROVED: 0 across #2–#6
+open review threads: 1 Macroscope OTP (scrubbing this tick)
+merged program PRs: none
+Clerk secrets: ABSENT
+Graphite auth: ABSENT
+stuck owner lanes: none — review/Clerk/Graphite are operator gates
+timer: marketplace-audit-30m remains armed (deliveryCount 32)

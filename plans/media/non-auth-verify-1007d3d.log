@@ -1,0 +1,36 @@
+SHA=1007d3d18566a0a31fb6361ec7ac12b6e79e6cf1
+BRANCH=cursor/polish-a3ed
+=== UNIT ===
+
+> test
+> vitest run --run
+
+
+ RUN  v4.1.11 /workspace
+
+
+ Test Files  5 passed (5)
+      Tests  25 passed (25)
+   Start at  09:29:49
+   Duration  466ms (transform 316ms, setup 0ms, import 427ms, tests 103ms, environment 173ms)
+
+=== TSC ===
+=== LIVE HTTP ===
+home_1:200 t=0.014267
+home_2:200 t=0.013783
+home_3:200 t=0.010698
+home_4:200 t=0.010450
+home_5:200 t=0.009843
+submit:200
+tag:200
+404:200
+<title>Seed bot 0 · Grok Bot Marketplace</title>
+=== MCP ===
+{"result":{"protocolVersion":"2024-11-05","capabilities":{"tools":{"listChanged":true}},"serverInfo":{"name":"grok-bot-marketplace","version":"1.0.0"}},"jsonrpc":"2.0","id":1}
+['list_bots', 'search_bots', 'get_bot']
+=== PERF MCP ===
+{"init_med_s": 0.009423850500752451, "list_bots_med_s": 0.011966985501203453, "delta_ms": 2.5431350004510023}
+=== PERF HOME cold curl ===
+home_med_s 0.011482 samples [0.011415, 0.011381, 0.011503, 0.011482, 0.01194]
+=== AUTH BLOCKED ===
+CLERK_SECRET_KEY missing — auth live/perf lanes deferred

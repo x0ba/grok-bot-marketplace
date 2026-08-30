@@ -1,0 +1,11 @@
+audit tick @ 2026-08-29T09:07Z (5 batched timer wakes consolidated)
+playbook: plugin cache (origin/main has plan; no pstack/ playbook path)
+goal: HOLD review + Clerk + Graphite; do not merge; auth lanes when secrets land
+stack linear: foundation→submit→feed→mcp→polish YES
+heads: #2 24e3a47 #3 fa9adfe #4 4dbb5c8 #5 a55efb9 #6 a56722a
+unit: 25/25 PASS
+live: home 200, convex 200, MCP initialize OK
+human reviews: 0 across #2–#6
+merged program PRs: none
+stuck lanes: none (auth/gt are operator gates, not idle owners)
+timer: marketplace-audit-30m still armed (deliveryCount 16)

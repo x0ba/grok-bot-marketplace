@@ -8,6 +8,7 @@ import { api } from '../../convex/_generated/api'
 import { Button } from '#/components/ui/button'
 import { Input } from '#/components/ui/input'
 import { Label } from '#/components/ui/label'
+import { Skeleton } from '#/components/ui/skeleton'
 import { Textarea } from '#/components/ui/textarea'
 import { validateBotUrl } from '../../convex/lib/parseBotPage'
 
@@ -266,7 +267,9 @@ function SubmitForm() {
 
         <aside className="submit-preview" aria-live="polite">
           {previewPending ? (
-            <p className="submit-preview-empty">Reading bot page…</p>
+            <div className="submit-preview-empty" aria-busy="true">
+              <Skeleton className="feed-skeleton" />
+            </div>
           ) : preview ? (
             <article className="bot-preview">
               {preview.ogImageUrl ? (

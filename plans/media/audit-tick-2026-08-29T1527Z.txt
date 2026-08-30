@@ -1,0 +1,17 @@
+audit tick @ 2026-08-29T15:27Z (marketplace-audit-30m pre-delivery; next timer ~15:32Z)
+playbook: origin/main lacks pstack/ — used plugin-cache autopilot-stack.md
+goal: HOLD review + Clerk + Graphite; do not merge; auth lanes when secrets land
+stack linear: foundation→submit→feed→mcp→polish YES
+heads: #2 24e3a47 #3 fa9adfe #4 c2ca02d #5 fbfb7fb #6 2d0c7a8
+side effects since 15:03 tick: PR #2–#6 bodies updated with clickable Review Gate media links (no code SHA change)
+unit: 25/25 PASS @ 2d0c7a8
+live non-auth: / 200, /submit 200, /?tag=demo 200, /bot/doesnotexist000 200; MCP init 200; tools list_bots,search_bots,get_bot
+perf non-auth: home median 12.28ms; MCP init median 6.14ms (budget 300ms)
+human APPROVED: 0 across #2–#6
+open review threads (non-outdated): 0
+merged program PRs: none
+Clerk secrets: ABSENT
+Graphite auth: ABSENT
+stuck owner lanes: none — review/Clerk/Graphite are operator gates
+operator packaging: Review Gate tables now on all five PR bodies pointing at plans/media/*
+timer: marketplace-audit-30m remains armed

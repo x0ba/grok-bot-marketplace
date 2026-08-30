@@ -1,0 +1,12 @@
+audit tick @ 2026-08-29T07:45Z (batched with prior overdue ticks)
+playbook: plugin cache (trunk lacks pstack path)
+goal: HOLD review+Clerk+Graphite; do not merge
+stack linear YES after mcp Streamable HTTP restack
+mcp head: a55efb9 Streamable HTTP transport
+polish tip: (after media commit)
+unit: 25/25
+inspector CLI Streamable HTTP: PASS (tools/list + tool calls)
+inspector web UI connect toggle: blocked in computer-use; review panel + CLI used for media
+auth/gt: still missing secrets
+human reviews: 0
+merged: none

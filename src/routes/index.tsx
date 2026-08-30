@@ -1,23 +1,43 @@
 import { useAuth } from '@clerk/tanstack-react-start'
 import { usePaginatedQuery, useQuery, useMutation } from 'convex/react'
-import { createFileRoute } from '@tanstack/react-router'
-import { useMemo, useRef, useState } from 'react'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { toast } from 'sonner'
+import { z } from 'zod'
 
 import { api } from '../../convex/_generated/api'
 import type { Id } from '../../convex/_generated/dataModel'
 import { BotCard } from '#/components/bot-card'
+import { TagFilter } from '#/components/tag-filter'
 import { Button } from '#/components/ui/button'
+import { Skeleton } from '#/components/ui/skeleton'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '#/components/ui/tabs'
 
+const searchSchema = z.object({
+  tag: z.string().optional(),
+})
+
 export const Route = createFileRoute('/')({
+  validateSearch: searchSchema,
   component: FeedPage,
   head: () => ({
-    meta: [{ title: 'Grok Bot Marketplace' }],
+    meta: [
+      { title: 'Grok Bot Marketplace' },
+      {
+        name: 'description',
+        content: 'Shared Grok bot templates, ranked by the crowd.',
+      },
+    ],
   }),
 })
 
 function FeedPage() {
+  const { tag: rawTag } = Route.useSearch()
+  const tag = useMemo(() => {
+    const trimmed = rawTag?.trim().toLowerCase().slice(0, 24)
+    return trimmed || undefined
+  }, [rawTag])
+  const navigate = useNavigate({ from: Route.fullPath })
   const [sort, setSort] = useState<'top' | 'new'>('top')
   const { isSignedIn } = useAuth()
   const toggleUpvote = useMutation(api.votes.toggleUpvote)
@@ -26,7 +46,7 @@ function FeedPage() {
     () => new Set<Id<'bots'>>(),
   )
 
-  const listArgs = useMemo(() => ({}), [])
+  const listArgs = useMemo(() => ({ tag }), [tag])
   const top = usePaginatedQuery(
     api.feed.listTop,
     sort === 'top' ? listArgs : 'skip',
@@ -46,6 +66,15 @@ function FeedPage() {
   )
   const votedSet = useMemo(() => new Set(votedIds ?? []), [votedIds])
 
+  // Tag filter runs after pagination, so keep loading until a page has
+  // matches or the catalog is exhausted (Convex allows one paginate/query).
+  useEffect(() => {
+    if (!tag) return
+    if (active.status !== 'CanLoadMore') return
+    if (active.results.length >= 20) return
+    active.loadMore(20)
+  }, [tag, active.status, active.results.length, active])
+
   async function handleVote(botId: Id<'bots'>) {
     if (pendingRef.current.has(botId)) return
     pendingRef.current.add(botId)
@@ -60,6 +89,24 @@ function FeedPage() {
     }
   }
 
+  function setTag(next: string | undefined) {
+    void navigate({
+      search: (prev) => ({ ...prev, tag: next }),
+    })
+  }
+
+  const filteringEmpty =
+    !!tag &&
+    active.results.length === 0 &&
+    (active.status === 'CanLoadMore' || active.status === 'LoadingMore')
+
+  const showSkeleton =
+    active.status === 'LoadingFirstPage' || filteringEmpty
+
+  const showEmpty =
+    active.results.length === 0 &&
+    active.status === 'Exhausted'
+
   return (
     <main className="page-wrap feed-page">
       <header className="feed-header">
@@ -68,6 +115,10 @@ function FeedPage() {
           Shared Grok bot templates, ranked by the crowd.
         </p>
       </header>
+
+      {tag ? (
+        <TagFilter activeTag={tag} onClear={() => setTag(undefined)} />
+      ) : null}
 
       <Tabs
         value={sort}
@@ -78,8 +129,16 @@ function FeedPage() {
           <TabsTrigger value="new">New</TabsTrigger>
         </TabsList>
         <TabsContent value={sort} className="feed-list">
-          {active.results.length === 0 && active.status === 'Exhausted' ? (
-            <p className="catalog-empty-copy">No bots yet</p>
+          {showSkeleton ? (
+            <div className="bot-list" aria-busy="true">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <Skeleton key={i} className="feed-skeleton" />
+              ))}
+            </div>
+          ) : showEmpty ? (
+            <p className="catalog-empty-copy">
+              {tag ? `No bots tagged ${tag}` : 'No bots yet'}
+            </p>
           ) : (
             <ul className="bot-list">
               {active.results.map((bot) => (
@@ -90,6 +149,7 @@ function FeedPage() {
                     signedIn={!!isSignedIn}
                     onRequireSignIn={() => undefined}
                     voteDisabled={pendingVotes.has(bot._id)}
+                    onTagClick={(t) => setTag(t)}
                     onVote={() => {
                       void handleVote(bot._id)
                     }}
@@ -99,7 +159,7 @@ function FeedPage() {
             </ul>
           )}
 
-          {active.status === 'CanLoadMore' ? (
+          {active.status === 'CanLoadMore' && active.results.length > 0 ? (
             <Button
               type="button"
               variant="secondary"
@@ -109,8 +169,7 @@ function FeedPage() {
               Load more
             </Button>
           ) : null}
-          {active.status === 'LoadingMore' ||
-          active.status === 'LoadingFirstPage' ? (
+          {active.status === 'LoadingMore' && active.results.length > 0 ? (
             <p className="field-meta">Loading…</p>
           ) : null}
         </TabsContent>

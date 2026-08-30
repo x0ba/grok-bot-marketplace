@@ -1,0 +1,11 @@
+audit tick @ 2026-08-29T05:51Z
+playbook: plugin cache (origin/main lacks pstack/skills/... path — known repo drift)
+goal: HOLD for operator review + Clerk + Graphite; do not merge
+stack linear: foundation→submit→feed→mcp→polish YES
+unit: 25/25 PASS @ 468b433
+live non-auth: home 200, convex 200, MCP initialize OK
+auth: blocked (no CLERK_SECRET_KEY)
+graphite submit: blocked (no auth token)
+human reviews: 0 across PR #2–#6
+merged this program: none (only env PR #1 historically)
+lanes: no stuck owner side-effect stalls; auth/gt are operator gates

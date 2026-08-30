@@ -1,0 +1,74 @@
+{
+  "recorded_at": "2026-08-29T03:56:19.702Z",
+  "tip_sha": "1007d3d18566a0a31fb6361ec7ac12b6e79e6cf1",
+  "foundation_perf": {
+    "metric": "home loadEventEnd ms",
+    "trunk_main_median": 57.80000000074506,
+    "head_median": 53.30000000074506,
+    "delta_ms": -4.5,
+    "budget_ms": 500,
+    "pass": true
+  },
+  "feed_perf": {
+    "metric": "home loadEventEnd ms with seeded catalog",
+    "trunk_median": 57.80000000074506,
+    "head_median": 55.29999999888241,
+    "delta_ms": -2.500000001862645,
+    "budget_ms": 750,
+    "pass": true
+  },
+  "polish_perf": {
+    "metric": "home loadEventEnd ms vs feed tip",
+    "feed_median": 55.29999999888241,
+    "head_median": 55.40000000037253,
+    "delta_ms": 0.10000000149011612,
+    "budget_ms": 250,
+    "pass": true
+  },
+  "mcp_perf": {
+    "initialize_median_ms": 6.391023499999989,
+    "list_bots_median_ms": 7.8051294999999925,
+    "delta_ms": 1.4141060000000039,
+    "budget_ms": 300,
+    "pass": true
+  },
+  "mcp_live_lanes": {
+    "tools": true,
+    "list_top": true,
+    "list_new": true,
+    "get_bot": true,
+    "get_missing": true,
+    "search_tag": true,
+    "limit_cap": true
+  },
+  "submit_preview_perf": {
+    "curl_baseline_median_s": 0.145089,
+    "preview_median": null,
+    "note": "preview action requires Clerk auth \u2014 blocked until CLERK_SECRET_KEY",
+    "pass": null
+  },
+  "verified_at": "2026-08-29T09:30Z",
+  "non_auth": {
+    "unit": "25/25",
+    "tsc": "pass",
+    "live": {
+      "home": 200,
+      "submit": 200,
+      "tag": 200,
+      "404": 200,
+      "ssr_title": "Seed bot 0 \u00b7 Grok Bot Marketplace",
+      "mcp_tools": [
+        "list_bots",
+        "search_bots",
+        "get_bot"
+      ]
+    },
+    "perf": {
+      "home_curl_med_s": 0.011482,
+      "mcp_init_med_s": 0.009424,
+      "mcp_list_bots_med_s": 0.011967,
+      "mcp_delta_ms": 2.54,
+      "note": "list_bots within 300ms of initialize (plan budget). Auth preview/vote perf deferred."
+    }
+  }
+}
